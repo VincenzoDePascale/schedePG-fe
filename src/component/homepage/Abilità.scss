@@ -1,0 +1,31 @@
+.formaAB {
+  width: 90%;
+  margin: 0;
+}
+
+.lineaAB {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  .clickAB {
+    display: flex;
+    justify-content: center;
+    width: 10%;
+  }
+  .ptAB {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+  }
+  .abilitàAB {
+    display: flex;
+    justify-content: start;
+    width: 50%;
+  }
+  .statAB {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+  }
+}

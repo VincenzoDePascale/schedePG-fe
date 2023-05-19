@@ -1,0 +1,35 @@
+.centro {
+  display: flex;
+  justify-content: center;
+}
+.box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border: 2px solid black;
+  border-radius: 10px;
+  margin: 10px;
+}
+.statistica {
+  position: absolute;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  top: -12px;
+  background-color: white;
+}
+.modificatore {
+  font-size: 2em;
+}
+.punteggio {
+  position: absolute;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  bottom: -10px;
+  background-color: white;
+}

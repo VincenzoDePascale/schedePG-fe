@@ -1,0 +1,148 @@
+.contAll {
+  padding: 20px;
+}
+
+.nomeDelPersonaggio {
+  display: flex;
+  align-self: center;
+
+  span {
+    font-weight: bold;
+    font-style: inherit;
+    text-decoration: underline;
+    font-size: 2em; /* Il doppio della dimensione del font normale */
+  }
+}
+.titolo {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.border {
+  border: 2px solid black;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  margin: 10px 0;
+}
+
+.containerTS {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .isp {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .BComp {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  //tiri salvezza
+  .listTS {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .titolo {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+  }
+  //abilità
+  .listAB {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      .linea {
+        display: flex;
+        width: 95%;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        .icon {
+          display: flex;
+          justify-content: center;
+          width: 10%;
+        }
+        .pt {
+          display: flex;
+          justify-content: center;
+          width: 20%;
+        }
+        .stat {
+          display: flex;
+          justify-content: center;
+          width: 45%;
+        }
+        .mod {
+          display: flex;
+          justify-content: center;
+          width: 20%;
+        }
+      }
+    }
+  }
+}
+
+.containerlinguaggi {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+}
+
+.containerData {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .border {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    margin: 10px 0;
+  }
+}
+
+.containerNote {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .border {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: 10px 0;
+  }
+  .titolo {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .viewer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    .border {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+.formaTS {
+  width: 90%;
+  margin: 0;
+}
+
+.lineaTS {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  .clickTS {
+    display: flex;
+    justify-content: center;
+    width: 10%;
+  }
+  .ptTS {
+    display: flex;
+    justify-content: center;
+    width: 30%;
+  }
+  .statTS {
+    display: flex;
+    justify-content: start;
+    width: 60%;
+  }
+}
