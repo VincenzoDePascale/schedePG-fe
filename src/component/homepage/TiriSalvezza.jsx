@@ -1,8 +1,9 @@
 import { Form, Modal } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./TiriSalvezza.scss";
 
-const TiriSalvezza = ({ mod, BComp, stat }) => {
+const TiriSalvezza = ({ mod, pg, stat }) => {
+  let BComp = pg.bonusCompetenza;
   const [isChecked, setIsChecked] = useState(false);
 
   const handleChange = () => {
@@ -22,6 +23,13 @@ const TiriSalvezza = ({ mod, BComp, stat }) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  useEffect(() => {
+    const presente = pg.tsattivi.some(
+      (item) => item.statistica === stat.toLowerCase()
+    );
+    setIsChecked(presente);
+  }, [pg.tsattivi, stat]);
 
   return (
     <>
@@ -50,9 +58,6 @@ const TiriSalvezza = ({ mod, BComp, stat }) => {
           <Modal.Title>tiro salvezza su {stat}</Modal.Title>
         </Modal.Header>
         <Modal.Body>Il risultato è: {result}</Modal.Body>
-        <Modal.Footer>
-          <button onClick={handleCloseModal}>Chiudi</button>
-        </Modal.Footer>
       </Modal>
     </>
   );

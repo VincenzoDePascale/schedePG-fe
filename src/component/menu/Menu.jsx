@@ -13,23 +13,16 @@ import "./Menu.scss";
 //import Modal_newPg from "./Modal_newPg";
 
 const Menu = () => {
-  console.log("menu");
   const dispatch = useDispatch();
   const myProfile = useSelector((state) => state.main.myProfile);
-  const personaggi = useSelector((state) => state.main.myProfile.listaPG);
   const token = useSelector((state) => state.main.myProfile.accessToken);
-  console.log("profilo completo in myProfile", myProfile);
-  console.log("token", token);
-
-  console.log("personaggi", personaggi);
-
-  // let [codicePG, setCodicePG] = useState();
-  // setCodicePG(myProfile.listaPG[0].id);
+  const pgInState = useSelector((state) => state.main.listPG);
+  const aggiornamento = useSelector((state) => state.main.aggiornamento);
 
   const searchAllPG = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/pg/giocatore/" + myProfile.username,
+        "http://localhost:8080/api/pg/username/" + myProfile.username,
         {
           method: "GET",
           headers: {
@@ -40,13 +33,16 @@ const Menu = () => {
           },
         }
       );
+      const data = await response.json();
       if (response.ok) {
-        console.log("la fetch della navbar è ok");
-        const data = await response.json();
-        console.log("i personaggi sono stati trovati", data);
+        console.log("listaPG", data);
         dispatch({ type: "ADD_PG_LIST", payload: data });
-        console.log("risultato della fetch che cerca i personaggi", data);
+        dispatch({ type: "AGGIORNAMENTO", payload: false });
+        setChangePG(false);
+        setAggiorna(false);
       } else {
+        setChangePG(false);
+        setAggiorna(false);
         // gestione dell'errore
       }
     } catch (error) {
@@ -54,7 +50,13 @@ const Menu = () => {
     }
   };
 
+  const [changePG, setChangePG] = useState(false);
   const [idPG, setIdPG] = useState();
+
+  const clickIdPg = (id) => {
+    setIdPG(id);
+    setChangePG(true);
+  };
 
   const searchPGById = async (idPG) => {
     try {
@@ -84,11 +86,17 @@ const Menu = () => {
 
   //modale creazione personaggio
 
+  const clickAddPG = () => {
+    setCreatePG(true);
+    setAggiorna(true);
+  };
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [nomeNewPg, setNomeNewPg] = useState();
+  const [newAllineamento, setNewAllineamento] = useState();
   const [newForza, setNewForza] = useState();
   const [newDestrezza, setNewDestrezza] = useState();
   const [newCostituzione, setNewCostituzione] = useState();
@@ -97,9 +105,16 @@ const Menu = () => {
   const [newCarisma, setNewCarisma] = useState();
   const [newRazza, setNewRazza] = useState();
   const [newClasse, setNewClasse] = useState();
+  const [newAbilita, setNewAbilita] = useState([]);
   const [newLivello, setNewLivello] = useState();
+  const [newBackground, setNewBackground] = useState();
+  const [newTrattiCaratteriali, setNewTrattiCaratteriali] = useState();
+  const [newIdeali, setNewIdeali] = useState();
+  const [newLegami, setNewLegami] = useState();
+  const [newDifetti, setNewDifetti] = useState();
 
   const [aggiorna, setAggiorna] = useState(false);
+  const [createPG, setCreatePG] = useState(false);
 
   const addNewPg = async () => {
     try {
@@ -113,6 +128,7 @@ const Menu = () => {
         body: JSON.stringify({
           nomeUtente: myProfile.username,
           nomePersonaggio: nomeNewPg,
+          allineamento: newAllineamento,
           forza: newForza,
           destrezza: newDestrezza,
           costituzione: newCostituzione,
@@ -121,17 +137,26 @@ const Menu = () => {
           carisma: newCarisma,
           razza: newRazza,
           classe: newClasse,
+          abilitaAttive: newAbilita,
           livello: newLivello,
+          background: newBackground,
+          tratti_caratteriali: newTrattiCaratteriali,
+          ideali: newIdeali,
+          legami: newLegami,
+          difetti: newDifetti,
         }),
       });
       if (response.ok) {
-        console.log("la fetch della ADD_NEW_PG è ok");
         const data = await response.json();
-        console.log("il personaggio è stato creato: ", data);
-        dispatch({ type: "ADD_PG_LIST", payload: data });
-        setAggiorna(true);
-        console.log("risultato della fetch che cerca i personaggi", data);
+        //dispatch({ type: "ADD_PG_LIST", payload: data });
+        await dispatch({ type: "SET_PG", payload: data });
+        console.log("abilità?", newAbilita);
+        setAggiorna(false);
+        setShow(false);
+        setCreatePG(false);
       } else {
+        setAggiorna(false);
+        setCreatePG(false);
         // gestione dell'errore
       }
     } catch (error) {
@@ -140,10 +165,20 @@ const Menu = () => {
   };
 
   useEffect(() => {
-    searchPGById(idPG);
-    if (aggiorna === true) {
+    if (createPG === true) {
+      addNewPg();
+    }
+  }, [createPG]);
+
+  useEffect(() => {
+    if (aggiorna === true || aggiornamento === true) {
       searchAllPG();
-      setAggiorna(false);
+    }
+  }, [aggiornamento, aggiorna, createPG]);
+
+  useEffect(() => {
+    if (changePG === true) {
+      searchPGById(idPG);
     }
   }, [idPG]);
 
@@ -156,7 +191,12 @@ const Menu = () => {
           </Navbar.Brand>
           <Navbar.Brand path="/homepage">La tua scheda</Navbar.Brand>
           <Nav>
-            <NavDropdown title="Personaggi" id="basic-nav-dropdown">
+            <NavDropdown
+              title="Pg"
+              id="basic-nav-dropdown"
+              align="end"
+              onClick={() => dispatch({ type: "AGGIORNAMENTO", payload: true })}
+            >
               <NavDropdown.Item>
                 <button
                   type="button"
@@ -168,11 +208,11 @@ const Menu = () => {
                   Creazione Pg
                 </button>
               </NavDropdown.Item>
-              {personaggi &&
-                personaggi?.map((pg) => (
+              {pgInState !== undefined &&
+                pgInState.map((pg) => (
                   <NavDropdown.Item
                     key={pg?.id}
-                    onClick={() => setIdPG(`${pg?.id}`)}
+                    onClick={() => clickIdPg(`${pg?.id}`)}
                   >
                     {pg?.nomePG}, {pg?.id}
                   </NavDropdown.Item>
@@ -199,6 +239,24 @@ const Menu = () => {
                 value={nomeNewPg}
                 onChange={(e) => setNomeNewPg(e.target.value)}
               />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="allinemaneto">
+              <Form.Label>Allineamento</Form.Label>
+              <Form.Select
+                value={newAllineamento}
+                onChange={(e) => setNewAllineamento(e.target.value)}
+              >
+                <option value="">Seleziona un allineamento</option>
+                <option value="LEGALE_BUONO">Legale buono</option>
+                <option value="LEGALE_NEUTRALE">Legale neutrale</option>
+                <option value="LEGALE_MALVAGIO">Legale malvagio</option>
+                <option value="NEUTRALE_BUONO">Neutrale buono</option>
+                <option value="NEUTRALE">Neutrale</option>
+                <option value="NEUTRALE_MALVAGIO">Neutrale Malvagio</option>
+                <option value="CAOTICO_BUONO">Caotico buono</option>
+                <option value="CAOTICO_NEUTRALE">Caotico neutrale</option>
+                <option value="CAOTICO_MALVAGIO">Caotico malvagio</option>
+              </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="forza">
               <Form.Label>Forza</Form.Label>
@@ -270,7 +328,6 @@ const Menu = () => {
                 <option value="NANO">Nano</option>
                 <option value="TIEFLING">Tiefling</option>
                 <option value="UMANO">Umano</option>
-                {/* Aggiungi ulteriori opzioni di razza qui */}
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="classe">
@@ -280,7 +337,7 @@ const Menu = () => {
                 onChange={(e) => setNewClasse(e.target.value)}
               >
                 <option value="">Seleziona una classe</option>
-                <option value="BARBARO">Berbaro</option>
+                <option value="BARBARO">Barbaro</option>
                 <option value="BARDO">Bardo</option>
                 <option value="CHIERICO">Chierico</option>
                 <option value="DRUIDO">Druido</option>
@@ -292,7 +349,41 @@ const Menu = () => {
                 <option value="RANGER">Ranger</option>
                 <option value="STREGONE">Stregone</option>
                 <option value="WARLOCK">Warlock</option>
-                {/* Aggiungi ulteriori opzioni di classe qui */}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="abilita">
+              <Form.Label>Abilità</Form.Label>
+              <Form.Select
+                multiple
+                value={newAbilita}
+                onChange={(e) =>
+                  setNewAbilita(
+                    Array.from(
+                      e.target.selectedOptions,
+                      (option) => option.value
+                    )
+                  )
+                }
+              >
+                <option value="">Seleziona le tue abilità</option>
+                <option value="Acrobazia">Acrobazia</option>
+                <option value="Addestrare animali">Addestrare animali</option>
+                <option value="Arcano">Arcano</option>
+                <option value="Atletica">Atletica</option>
+                <option value="Furtività">Furtività</option>
+                <option value="Indagare">Indagare</option>
+                <option value="Inganno">Inganno</option>
+                <option value="Intimidire">Intimidire</option>
+                <option value="Intrattenere">Intrattenere</option>
+                <option value="Intuizione">Intuizione</option>
+                <option value="Medicina">Medicina</option>
+                <option value="Natura">Natura</option>
+                <option value="Percezione">Percezione</option>
+                <option value="Persuasione">Persuasione</option>
+                <option value="Rapidità di mano">Rapidità di mano</option>
+                <option value="Religione">Religione</option>
+                <option value="Sopravvivenza">Sopravvivenza</option>
+                <option value="Storia">Storia</option>
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="livello">
@@ -304,13 +395,58 @@ const Menu = () => {
                 onChange={(e) => setNewLivello(e.target.value)}
               />
             </Form.Group>
+            <Form.Group className="mb-3" controlId="Background">
+              <Form.Label>Background</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci il background"
+                value={newBackground}
+                onChange={(e) => setNewBackground(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="tratti caratteriali">
+              <Form.Label>tratti caratteriali</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci i tratti caratteriali"
+                value={newTrattiCaratteriali}
+                onChange={(e) => setNewTrattiCaratteriali(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="Ideali">
+              <Form.Label>Ideali</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci gli ideali"
+                value={newIdeali}
+                onChange={(e) => setNewIdeali(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="Legami">
+              <Form.Label>Legami</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci i legami"
+                value={newLegami}
+                onChange={(e) => setNewLegami(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="Difetti">
+              <Form.Label>Difetti</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci i difetti"
+                value={newDifetti}
+                onChange={(e) => setNewDifetti(e.target.value)}
+              />
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Chiudi
           </Button>
-          <Button variant="primary" onClick={addNewPg}>
+          <Button variant="primary" onClick={() => clickAddPG()}>
             Crea nuovo pg
           </Button>
         </Modal.Footer>

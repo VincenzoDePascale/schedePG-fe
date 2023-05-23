@@ -1,0 +1,18 @@
+.formaEquip {
+  width: 90%;
+  margin: 0;
+  .linea {
+    display: flex;
+    white-space: nowrap;
+    width: 100%;
+  }
+  .nome {
+    width: 90%;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .peso {
+    width: 10%;
+  }
+}

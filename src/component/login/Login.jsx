@@ -7,24 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  // const [myProfile, setMyProfile] = useState({
-  //   username: "",
-  //   accessToken: "",
-  //   tokenType: "",
-  //   email: "",
-  //   password: "",
-  //   roles: [""],
-  //   listaPG: [{}],
-  // });
-
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
-  //const [accessToken, setAccessToken] = useState("");
-  //const [tokenType, setTokenType] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //const [roles, setRoles] = useState("");
-  //const [listaPG, setListaPG] = useState("");
 
   const token = useSelector((state) => state.main.myProfile.accessToken);
   console.log(token);
@@ -66,6 +52,9 @@ const Login = () => {
         const data = await response.json();
         console.log("questo è data della fetch LOGIN", data);
         dispatch({ type: "ADD_MY_PROFILE", payload: data });
+        console.log("data di login", data);
+        dispatch({ type: "ADD_PG_LIST", payload: data.listaPG });
+        console.log("data.personaggi di login", data.listaPG);
         navigate("/homepage");
       } else {
         // gestione dell'errore

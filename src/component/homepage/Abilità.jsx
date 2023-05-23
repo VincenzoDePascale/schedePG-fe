@@ -1,8 +1,9 @@
 import { Form, Modal } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Abilità.scss";
 
-const Abilità = ({ mod, BComp, abilità, stat }) => {
+const Abilità = ({ mod, pg, abilità, stat }) => {
+  let BComp = pg.bonusCompetenza;
   const [isChecked, setIsChecked] = useState(false);
 
   const handleChange = () => {
@@ -22,6 +23,11 @@ const Abilità = ({ mod, BComp, abilità, stat }) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  useEffect(() => {
+    const presente = pg.abilitaAttive.includes(abilità);
+    setIsChecked(presente);
+  }, [pg.abilitaAttive, abilità]);
 
   return (
     <>
@@ -51,9 +57,6 @@ const Abilità = ({ mod, BComp, abilità, stat }) => {
           <Modal.Title>tiro su: {abilità}</Modal.Title>
         </Modal.Header>
         <Modal.Body>Il risultato è: {result}</Modal.Body>
-        <Modal.Footer>
-          <button onClick={handleCloseModal}>Chiudi</button>
-        </Modal.Footer>
       </Modal>
     </>
   );

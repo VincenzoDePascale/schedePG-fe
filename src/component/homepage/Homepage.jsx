@@ -1,17 +1,22 @@
 import { Row, Col, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./Homepage.scss";
 import Menu from "../menu/Menu";
 import Statistica from "./Statistica";
 import TiriSalvezza from "./TiriSalvezza";
 import Abilità from "./Abilità";
+import Equipaggiamento from "./Equipaggiamento";
+import Armour from "./Armour";
+import Armi from "./Armi";
 
 const Homepage = () => {
+  const dispatch = useDispatch();
   const myProfile = useSelector((state) => state.main.myProfile);
   const token = useSelector((state) => state.main.myProfile.accessToken);
   const currentPG = useSelector((state) => state.main.PersonaggioCorrente);
+  console.log("myProfile", myProfile);
 
   const [viewerBComp, setViewerBComp] = useState(false);
   const changeViewBComp = () => {
@@ -38,12 +43,76 @@ const Homepage = () => {
     setViewerLingue(!viewerLingue);
   };
 
-  let modFor = Math.floor((currentPG.forza - 10) / 2.0);
-  let modDes = Math.floor((currentPG.destrezza - 10) / 2.0);
-  let modCos = Math.floor((currentPG.costituzione - 10) / 2.0);
-  let modInt = Math.floor((currentPG.intelligenza - 10) / 2.0);
-  let modSag = Math.floor((currentPG.saggezza - 10) / 2.0);
-  let modCar = Math.floor((currentPG.carisma - 10) / 2.0);
+  const [viewerArmor, setViewerArmor] = useState(false);
+  const changeViewArmor = () => {
+    setViewerArmor(!viewerArmor);
+  };
+
+  const [viewerArmi, setViewerArmi] = useState(false);
+  const changeViewArmi = () => {
+    setViewerArmi(!viewerArmi);
+  };
+
+  const [viewerEquip, setViewerEquip] = useState(false);
+  const changeViewEquip = () => {
+    setViewerEquip(!viewerEquip);
+  };
+
+  const [viewerGold, setViewerGold] = useState(false);
+  const changeViewGold = () => {
+    setViewerGold(!viewerGold);
+  };
+
+  let modFor =
+    currentPG !== undefined ? Math.floor((currentPG.forza - 10) / 2.0) : 0;
+  let modDes =
+    currentPG !== undefined ? Math.floor((currentPG.destrezza - 10) / 2.0) : 0;
+  let modCos =
+    currentPG !== undefined
+      ? Math.floor((currentPG.costituzione - 10) / 2.0)
+      : 0;
+  let modInt =
+    currentPG !== undefined
+      ? Math.floor((currentPG.intelligenza - 10) / 2.0)
+      : 0;
+  let modSag =
+    currentPG !== undefined ? Math.floor((currentPG.saggezza - 10) / 2.0) : 0;
+  let modCar =
+    currentPG !== undefined ? Math.floor((currentPG.carisma - 10) / 2.0) : 0;
+
+  let CA;
+  if (currentPG.armatura != null) {
+    switch (currentPG.armatura.tipo) {
+      case "ARMATURA_LEGGERA":
+        CA =
+          currentPG.armatura.classeArmatura +
+          (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0) +
+          modDes;
+        break;
+      case "ARMATURA_MEDIA":
+        if (modDes > 2) {
+          CA =
+            currentPG.armatura.classeArmatura +
+            (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0) +
+            2;
+        } else {
+          CA =
+            currentPG.armatura.classeArmatura +
+            (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0) +
+            modDes;
+        }
+        break;
+      case "ARMATURA_PESANTE":
+        CA =
+          currentPG.armatura.classeArmatura +
+          (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0);
+        break;
+      default:
+        break;
+    }
+  } else {
+    CA = 10 + modDes;
+  }
 
   //calncella PG
 
@@ -53,21 +122,26 @@ const Homepage = () => {
   const handleClickDelete = (p) => {
     setIdDel(p);
     setDellOK(true);
+    dispatch({ type: "AGGIORNAMENTO", payload: true });
   };
+
   const cancellaPG = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/pg/" + idDel, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/pg/delete/" + idDel,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         setDellOK(false);
-        console.log("messaggio di cancellazione se è ok", data.message);
+        dispatch({ type: "AGGIORNAMENTO", payload: false });
       } else {
         // gestione dell'errore
       }
@@ -88,18 +162,15 @@ const Homepage = () => {
       <div className="contAll">
         {/* intestazione */}
         <Row className="align-items-center">
-          <Col lg={4}>
+          <Col xs={12} lg={4}>
             <div className="nomeDelPersonaggio">
               <p>
                 Nome del personaggio:
-                <span>
-                  {currentPG.nomePG}, {currentPG.id}
-                </span>
+                <span>{currentPG.nomePG}</span>
               </p>
             </div>
           </Col>
-
-          <Col lg={4}>
+          <Col xs={6} lg={4}>
             <div>
               <p>
                 Classe e livello:{" "}
@@ -117,7 +188,7 @@ const Homepage = () => {
               </p>
             </div>
           </Col>
-          <Col lg={4}>
+          <Col xs={6} lg={4}>
             <div>
               <p>
                 Background: <span> {currentPG.background} </span>
@@ -179,34 +250,30 @@ const Homepage = () => {
                 </div>
                 {!viewerTS && (
                   <div className="viewer">
-                    <TiriSalvezza
-                      mod={modFor}
-                      BComp={currentPG.bonusCompetenza}
-                      stat={`forza`}
-                    />
+                    <TiriSalvezza mod={modFor} pg={currentPG} stat={`forza`} />
                     <TiriSalvezza
                       mod={modDes}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       stat={`Destrezza`}
                     />
                     <TiriSalvezza
                       mod={modCos}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       stat={`Costituzione`}
                     />
                     <TiriSalvezza
                       mod={modInt}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       stat={`Intelligenza`}
                     />
                     <TiriSalvezza
                       mod={modSag}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       stat={`Saggezza`}
                     />
                     <TiriSalvezza
                       mod={modCar}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       stat={`Carisma`}
                     />
                   </div>
@@ -221,109 +288,109 @@ const Homepage = () => {
                   <div className="viewer">
                     <Abilità
                       mod={modDes}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Acrobazia`}
                       stat={`des`}
                     />
                     <Abilità
                       mod={modSag}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Addestrare animali`}
                       stat={`sag`}
                     />
                     <Abilità
                       mod={modInt}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Arcano`}
                       stat={`int`}
                     />
                     <Abilità
                       mod={modFor}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Atletica`}
                       stat={`for`}
                     />
                     <Abilità
                       mod={modDes}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Furtività`}
                       stat={`des`}
                     />
                     <Abilità
                       mod={modInt}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Indagare`}
                       stat={`int`}
                     />
                     <Abilità
                       mod={modCar}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Inganno`}
                       stat={`car`}
                     />
                     <Abilità
                       mod={modCar}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Intimidire`}
                       stat={`car`}
                     />
                     <Abilità
                       mod={modCar}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Intrattenere`}
                       stat={`car`}
                     />
                     <Abilità
                       mod={modSag}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Intuizione`}
                       stat={`sag`}
                     />
                     <Abilità
                       mod={modSag}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Medicina`}
                       stat={`sag`}
                     />
                     <Abilità
                       mod={modInt}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Natura`}
                       stat={`int`}
                     />
                     <Abilità
                       mod={modSag}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Percezione`}
                       stat={`sag`}
                     />
                     <Abilità
                       mod={modCar}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Persuasione`}
                       stat={`car`}
                     />
                     <Abilità
                       mod={modDes}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Rapidità di mano`}
                       stat={`des`}
                     />
                     <Abilità
                       mod={modInt}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Religione`}
                       stat={`int`}
                     />
                     <Abilità
                       mod={modSag}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Sopravvivenza`}
                       stat={`sag`}
                     />
                     <Abilità
                       mod={modInt}
-                      BComp={currentPG.bonusCompetenza}
+                      pg={currentPG}
                       abilità={`Storia`}
                       stat={`int`}
                     />
@@ -339,7 +406,7 @@ const Homepage = () => {
               <ul>
                 {!viewerLingue && (
                   <div className="viewer">
-                    {currentPG.linguaggi.map((linguaggio, index) => (
+                    {currentPG.linguaggi?.map((linguaggio, index) => (
                       <li key={index}>{linguaggio}</li>
                     ))}
                   </div>
@@ -353,7 +420,17 @@ const Homepage = () => {
           >
             <div className="containerData border">
               <div className="border">
-                Classe armatura: {currentPG.classe_armatura}
+                <div className="border titolo" onClick={changeViewArmor}>
+                  Classe armatura: {CA}
+                </div>
+                {!viewerArmor && (
+                  <div className="viewer">
+                    {currentPG.armatura && (
+                      <Armour armour={currentPG.armatura} />
+                    )}
+                    {currentPG.scudo && <Armour armour={currentPG.scudo} />}
+                  </div>
+                )}
               </div>
               <div className="border">iniziativa: {currentPG.iniziativa}</div>
               <div className="border">velocità: {currentPG.velocita}</div>
@@ -363,8 +440,56 @@ const Homepage = () => {
                 <div>PF temporanei: {currentPG.pf_temporanei}</div>
               </div>
               <div className="border">
-                dado vita: {currentPG.dado_vita.dado}
+                dado vita: {currentPG.dado_vita?.dado}
               </div>
+            </div>
+            <div className="containerArmor border">
+              <div className="border titolo" onClick={changeViewArmi}>
+                Armi
+              </div>
+              {!viewerArmi && (
+                <div className="viewer">
+                  {currentPG.armi?.map((arma, index) => (
+                    <div className="border">
+                      <Armi
+                        key={index}
+                        arma={arma}
+                        modFor={modFor}
+                        modDes={modDes}
+                        BComp={currentPG.bonusCompetenza}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="containerQuip border">
+              <div className="border titolo" onClick={changeViewEquip}>
+                equipaggiamento
+              </div>
+              {!viewerEquip && (
+                <div className="viewer">
+                  {/* mappare l'equip */}
+                  {currentPG.equipaggiamentoBase?.map(
+                    (equipaggiamento, index) => (
+                      <div className="border">
+                        <Equipaggiamento key={index} equip={equipaggiamento} />
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+              <div className="border titolo" onClick={changeViewGold}>
+                ricchezza
+              </div>
+              {!viewerGold && (
+                <div className="viewer">
+                  <div>MR: {currentPG.monete_rame}</div>
+                  <div>MA: {currentPG.monete_argento}</div>
+                  <div>MO: {currentPG.monete_oro}</div>
+                  <div>MP: {currentPG.monete_platino}</div>
+                </div>
+              )}
             </div>
           </Col>
           <Col
@@ -377,6 +502,10 @@ const Homepage = () => {
               </div>
               {!viewerNOTE && (
                 <div className="viewer">
+                  <div className="border">
+                    <div>{currentPG.background}</div>
+                    <div className="titolo">background</div>
+                  </div>
                   <div className="border">
                     <div>{currentPG.tratti_caratteriali}</div>
                     <div className="titolo">tratti caratteriali</div>

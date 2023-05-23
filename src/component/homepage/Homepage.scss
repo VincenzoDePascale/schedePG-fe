@@ -5,12 +5,10 @@
 .nomeDelPersonaggio {
   display: flex;
   align-self: center;
-
+  justify-content: center;
   span {
     font-weight: bold;
-    font-style: inherit;
-    text-decoration: underline;
-    font-size: 2em; /* Il doppio della dimensione del font normale */
+    font-size: 2em;
   }
 }
 .titolo {
@@ -46,10 +44,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    .titolo {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
     .viewer {
       display: flex;
       flex-direction: column;
@@ -62,7 +56,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-
     .viewer {
       display: flex;
       flex-direction: column;
@@ -118,6 +111,30 @@
     flex-direction: column;
     width: 90%;
     margin: 10px 0;
+  }
+}
+
+.containerArmor {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .viewer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.containerQuip {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .viewer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
 }
 

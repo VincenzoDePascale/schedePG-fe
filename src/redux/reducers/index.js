@@ -4,6 +4,7 @@ const initialState = {
   myProfile: {},
   listPG: [],
   PersonaggioCorrente: {},
+  aggiornamento: false,
 };
 
 const MainReducer = (state = initialState, action) => {
@@ -14,6 +15,8 @@ const MainReducer = (state = initialState, action) => {
       return { ...state, listPG: action.payload };
     case "SET_PG":
       return { ...state, PersonaggioCorrente: action.payload };
+    case "AGGIORNAMENTO":
+      return { ...state, aggiornamento: action.payload };
     default:
       return state;
   }
