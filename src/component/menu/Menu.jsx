@@ -116,6 +116,36 @@ const Menu = () => {
   const [aggiorna, setAggiorna] = useState(false);
   const [createPG, setCreatePG] = useState(false);
 
+  const randomFor = () => {
+    const randomNumber = Math.floor(Math.random() * 20) + 1;
+    setNewForza(randomNumber.toString());
+  };
+
+  const randomDes = () => {
+    const randomNumber = Math.floor(Math.random() * 20) + 1;
+    setNewDestrezza(randomNumber.toString());
+  };
+
+  const randomCos = () => {
+    const randomNumber = Math.floor(Math.random() * 20) + 1;
+    setNewCostituzione(randomNumber.toString());
+  };
+
+  const randomInt = () => {
+    const randomNumber = Math.floor(Math.random() * 20) + 1;
+    setNewIntelligenza(randomNumber.toString());
+  };
+
+  const randomSag = () => {
+    const randomNumber = Math.floor(Math.random() * 20) + 1;
+    setNewSaggezza(randomNumber.toString());
+  };
+
+  const randomCar = () => {
+    const randomNumber = Math.floor(Math.random() * 20) + 1;
+    setNewCarisma(randomNumber.toString());
+  };
+
   const addNewPg = async () => {
     try {
       const response = await fetch("http://localhost:8080/api/pg/save", {
@@ -247,70 +277,89 @@ const Menu = () => {
                 onChange={(e) => setNewAllineamento(e.target.value)}
               >
                 <option value="">Seleziona un allineamento</option>
-                <option value="LEGALE_BUONO">Legale buono</option>
-                <option value="LEGALE_NEUTRALE">Legale neutrale</option>
-                <option value="LEGALE_MALVAGIO">Legale malvagio</option>
-                <option value="NEUTRALE_BUONO">Neutrale buono</option>
-                <option value="NEUTRALE">Neutrale</option>
-                <option value="NEUTRALE_MALVAGIO">Neutrale Malvagio</option>
-                <option value="CAOTICO_BUONO">Caotico buono</option>
-                <option value="CAOTICO_NEUTRALE">Caotico neutrale</option>
-                <option value="CAOTICO_MALVAGIO">Caotico malvagio</option>
+                <option value="legale buono">Legale buono</option>
+                <option value="legale neutrale">Legale neutrale</option>
+                <option value="legale malvagio">Legale malvagio</option>
+                <option value="neutrale buono">Neutrale buono</option>
+                <option value="neutrale">Neutrale</option>
+                <option value="neutrale buono">Neutrale Malvagio</option>
+                <option value="caotico buono">Caotico buono</option>
+                <option value="caotico neutrale">Caotico neutrale</option>
+                <option value="caotico malvagio">Caotico malvagio</option>
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="forza">
               <Form.Label>Forza</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Inserisci il valore della forza"
-                value={newForza}
-                onChange={(e) => setNewForza(e.target.value)}
-              />
+              <div className="d-flex">
+                <Form.Control
+                  className="flex-grow-1"
+                  type="number"
+                  placeholder="Inserisci il valore della forza"
+                  value={newForza}
+                  onChange={(e) => setNewForza(e.target.value)}
+                />
+                <Button onClick={randomFor}>1D20</Button>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="destrezza">
               <Form.Label>Destrezza</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Inserisci il valore della destrezza"
-                value={newDestrezza}
-                onChange={(e) => setNewDestrezza(e.target.value)}
-              />
+              <div className="d-flex">
+                <Form.Control
+                  type="number"
+                  placeholder="Inserisci il valore della destrezza"
+                  value={newDestrezza}
+                  onChange={(e) => setNewDestrezza(e.target.value)}
+                />
+                <Button onClick={randomDes}>1D20</Button>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="costituzione">
               <Form.Label>Costituzione</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Inserisci il valore della costituzione"
-                value={newCostituzione}
-                onChange={(e) => setNewCostituzione(e.target.value)}
-              />
+              <div className="d-flex">
+                <Form.Control
+                  type="number"
+                  placeholder="Inserisci il valore della costituzione"
+                  value={newCostituzione}
+                  onChange={(e) => setNewCostituzione(e.target.value)}
+                />
+                <Button onClick={randomCos}>1D20</Button>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="intelligenza">
               <Form.Label>Intelligenza</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Inserisci il valore dell'intelligenza"
-                value={newIntelligenza}
-                onChange={(e) => setNewIntelligenza(e.target.value)}
-              />
+              <div className="d-flex">
+                <Form.Control
+                  type="number"
+                  placeholder="Inserisci il valore dell'intelligenza"
+                  value={newIntelligenza}
+                  onChange={(e) => setNewIntelligenza(e.target.value)}
+                />
+                <Button onClick={randomInt}>1D20</Button>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="saggezza">
               <Form.Label>Saggezza</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Inserisci il valore della saggezza"
-                value={newSaggezza}
-                onChange={(e) => setNewSaggezza(e.target.value)}
-              />
+              <div className="d-flex">
+                <Form.Control
+                  type="number"
+                  placeholder="Inserisci il valore della saggezza"
+                  value={newSaggezza}
+                  onChange={(e) => setNewSaggezza(e.target.value)}
+                />
+                <Button onClick={randomSag}>1D20</Button>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="carisma">
               <Form.Label>Carisma</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Inserisci il valore del carisma"
-                value={newCarisma}
-                onChange={(e) => setNewCarisma(e.target.value)}
-              />
+              <div className="d-flex">
+                <Form.Control
+                  type="number"
+                  placeholder="Inserisci il valore del carisma"
+                  value={newCarisma}
+                  onChange={(e) => setNewCarisma(e.target.value)}
+                />
+                <Button onClick={randomCar}>1D20</Button>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="razza">
               <Form.Label>Razza</Form.Label>
@@ -319,15 +368,15 @@ const Menu = () => {
                 onChange={(e) => setNewRazza(e.target.value)}
               >
                 <option value="">Seleziona una razza</option>
-                <option value="DRACONIDE">Draconide</option>
-                <option value="ELFO">Elfo</option>
-                <option value="GNOMO">Gnomo</option>
-                <option value="HALFLING">Halfling</option>
-                <option value="MEZZELFO">Mezzelfo</option>
-                <option value="MEZZORCO">Mezzorco</option>
-                <option value="NANO">Nano</option>
-                <option value="TIEFLING">Tiefling</option>
-                <option value="UMANO">Umano</option>
+                <option value="draconide">Draconide</option>
+                <option value="elfo">Elfo</option>
+                <option value="gnomo">Gnomo</option>
+                <option value="halfling">Halfling</option>
+                <option value="mezzelfo">Mezzelfo</option>
+                <option value="mezzorco">Mezzorco</option>
+                <option value="nano">Nano</option>
+                <option value="tiefling">Tiefling</option>
+                <option value="umano">Umano</option>
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="classe">
@@ -337,18 +386,18 @@ const Menu = () => {
                 onChange={(e) => setNewClasse(e.target.value)}
               >
                 <option value="">Seleziona una classe</option>
-                <option value="BARBARO">Barbaro</option>
-                <option value="BARDO">Bardo</option>
-                <option value="CHIERICO">Chierico</option>
-                <option value="DRUIDO">Druido</option>
-                <option value="GUERRIERO">Guerriero</option>
-                <option value="LADRO">Ladro</option>
-                <option value="MAGO">Mago</option>
-                <option value="MONACO">Monaco</option>
-                <option value="PALADINO">Paladino</option>
-                <option value="RANGER">Ranger</option>
-                <option value="STREGONE">Stregone</option>
-                <option value="WARLOCK">Warlock</option>
+                <option value="barbaro">Barbaro</option>
+                <option value="bardo">Bardo</option>
+                <option value="chierico">Chierico</option>
+                <option value="druido">Druido</option>
+                <option value="guerriero">Guerriero</option>
+                <option value="ladro">Ladro</option>
+                <option value="mago">Mago</option>
+                <option value="monaco">Monaco</option>
+                <option value="paladino">Paladino</option>
+                <option value="ranger">Ranger</option>
+                <option value="stragone">Stregone</option>
+                <option value="warlock">Warlock</option>
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="abilita">

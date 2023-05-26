@@ -25,8 +25,10 @@ const Abilità = ({ mod, pg, abilità, stat }) => {
   };
 
   useEffect(() => {
-    const presente = pg.abilitaAttive.includes(abilità);
-    setIsChecked(presente);
+    if (pg.abilitaAttive !== null) {
+      const presente = pg.abilitaAttive.includes(abilità);
+      setIsChecked(presente);
+    }
   }, [pg.abilitaAttive, abilità]);
 
   return (

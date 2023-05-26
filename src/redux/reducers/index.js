@@ -1,5 +1,3 @@
-import { ADD_TO_FAV } from "../actions";
-
 const initialState = {
   myProfile: {},
   listPG: [],

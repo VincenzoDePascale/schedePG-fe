@@ -92,7 +92,7 @@ const Armi = ({ index, arma, modFor, modDes, BComp }) => {
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            {arma.nome} : {arma.tipo}
+            {arma.nome} : {arma.tipo.nome}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

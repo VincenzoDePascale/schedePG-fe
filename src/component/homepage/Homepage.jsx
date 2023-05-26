@@ -1,6 +1,7 @@
 import { Row, Col, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { BsFillShieldFill } from "react-icons/bs";
 
 import "./Homepage.scss";
 import Menu from "../menu/Menu";
@@ -10,6 +11,17 @@ import Abilità from "./Abilità";
 import Equipaggiamento from "./Equipaggiamento";
 import Armour from "./Armour";
 import Armi from "./Armi";
+import Privilegio from "./Privilegio";
+
+import shield from "../../Assets/img/shield.png";
+import swords from "../../Assets/img/swords.png";
+import bag from "../../Assets/img/bag.png";
+import tools from "../../Assets/img/tools.png";
+import escape from "../../Assets/img/escape.png";
+import pen from "../../Assets/img/pen.png";
+import medals from "../../Assets/img/medals.png";
+import lips from "../../Assets/img/lips.png";
+import idea from "../../Assets/img/idea.png";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -18,49 +30,59 @@ const Homepage = () => {
   const currentPG = useSelector((state) => state.main.PersonaggioCorrente);
   console.log("myProfile", myProfile);
 
-  const [viewerBComp, setViewerBComp] = useState(false);
+  const [viewerBComp, setViewerBComp] = useState(true);
   const changeViewBComp = () => {
     setViewerBComp(!viewerBComp);
   };
 
-  const [viewerTS, setViewerTS] = useState(false);
+  const [viewerTS, setViewerTS] = useState(true);
   const changeViewTS = () => {
     setViewerTS(!viewerTS);
   };
 
-  const [viewerAB, setViewerAB] = useState(false);
+  const [viewerAB, setViewerAB] = useState(true);
   const changeViewAB = () => {
     setViewerAB(!viewerAB);
   };
 
-  const [viewerNOTE, setViewerNOTE] = useState(false);
+  const [viewerNOTE, setViewerNOTE] = useState(true);
   const changeViewNOTE = () => {
     setViewerNOTE(!viewerNOTE);
   };
 
-  const [viewerLingue, setViewerLingue] = useState(false);
+  const [viewerLingue, setViewerLingue] = useState(true);
   const changeViewLingue = () => {
     setViewerLingue(!viewerLingue);
   };
 
-  const [viewerArmor, setViewerArmor] = useState(false);
+  const [viewerArmor, setViewerArmor] = useState(true);
   const changeViewArmor = () => {
     setViewerArmor(!viewerArmor);
   };
 
-  const [viewerArmi, setViewerArmi] = useState(false);
+  const [viewerArmi, setViewerArmi] = useState(true);
   const changeViewArmi = () => {
     setViewerArmi(!viewerArmi);
   };
 
-  const [viewerEquip, setViewerEquip] = useState(false);
+  const [viewerEquip, setViewerEquip] = useState(true);
   const changeViewEquip = () => {
     setViewerEquip(!viewerEquip);
   };
 
-  const [viewerGold, setViewerGold] = useState(false);
+  const [viewerGold, setViewerGold] = useState(true);
   const changeViewGold = () => {
     setViewerGold(!viewerGold);
+  };
+
+  const [viewerComp, setViewerComp] = useState(true);
+  const changeViewComp = () => {
+    setViewerComp(!viewerComp);
+  };
+
+  const [viewerPET, setViewerPET] = useState(true);
+  const changeViewPET = () => {
+    setViewerPET(!viewerPET);
   };
 
   let modFor =
@@ -82,14 +104,14 @@ const Homepage = () => {
 
   let CA;
   if (currentPG.armatura != null) {
-    switch (currentPG.armatura.tipo) {
-      case "ARMATURA_LEGGERA":
+    switch (currentPG.armatura.tipo.nome) {
+      case "armatura leggera":
         CA =
           currentPG.armatura.classeArmatura +
           (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0) +
           modDes;
         break;
-      case "ARMATURA_MEDIA":
+      case "armatura media":
         if (modDes > 2) {
           CA =
             currentPG.armatura.classeArmatura +
@@ -102,7 +124,7 @@ const Homepage = () => {
             modDes;
         }
         break;
-      case "ARMATURA_PESANTE":
+      case "armatura pesante":
         CA =
           currentPG.armatura.classeArmatura +
           (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0);
@@ -175,7 +197,7 @@ const Homepage = () => {
               <p>
                 Classe e livello:{" "}
                 <span>
-                  {currentPG.classe}, {currentPG.livello}
+                  {currentPG.classe.classe}, {currentPG.livello}
                 </span>
               </p>
 
@@ -184,7 +206,7 @@ const Homepage = () => {
               </p>
 
               <p>
-                Razza: <span>{currentPG.razza}</span>
+                Razza: <span>{currentPG.razza.razza}</span>
               </p>
             </div>
           </Col>
@@ -195,7 +217,7 @@ const Homepage = () => {
               </p>
 
               <p>
-                allineamento: <span>{currentPG.allineamento} </span>
+                allineamento: <span>{currentPG.allineamento.tipo} </span>
               </p>
 
               <p>
@@ -207,22 +229,22 @@ const Homepage = () => {
         {/* statistiche */}
         <Row className="m-0 pt-2 pb-2">
           <Col xs={4} md={2}>
-            <Statistica stat={currentPG.forza} nome={`forza`} />
+            <Statistica stat={currentPG.forza} nome={`for`} />
           </Col>
           <Col xs={4} md={2}>
-            <Statistica stat={currentPG.destrezza} nome={`destrezza`} />
+            <Statistica stat={currentPG.destrezza} nome={`des`} />
           </Col>
           <Col xs={4} md={2}>
-            <Statistica stat={currentPG.costituzione} nome={`costituzione`} />
+            <Statistica stat={currentPG.costituzione} nome={`cos`} />
           </Col>
           <Col xs={4} md={2}>
-            <Statistica stat={currentPG.intelligenza} nome={`intelligenza`} />
+            <Statistica stat={currentPG.intelligenza} nome={`int`} />
           </Col>
           <Col xs={4} md={2}>
-            <Statistica stat={currentPG.saggezza} nome={`saggezza`} />
+            <Statistica stat={currentPG.saggezza} nome={`sag`} />
           </Col>
           <Col xs={4} md={2}>
-            <Statistica stat={currentPG.carisma} nome={`carisma`} />
+            <Statistica stat={currentPG.carisma} nome={`car`} />
           </Col>
         </Row>
 
@@ -246,9 +268,12 @@ const Homepage = () => {
               {/*tiri salvezza*/}
               <div className="border listTS">
                 <div className="titolo border" onClick={changeViewTS}>
-                  Tiri Salvezza
+                  <p className="titoloIcona">
+                    <img src={escape} />
+                    <p>Tiri Salvezza</p>
+                  </p>
                 </div>
-                {!viewerTS && (
+                {viewerTS && (
                   <div className="viewer">
                     <TiriSalvezza mod={modFor} pg={currentPG} stat={`forza`} />
                     <TiriSalvezza
@@ -282,9 +307,12 @@ const Homepage = () => {
               {/*abilità*/}
               <div className="border listAB">
                 <div className="titolo border" onClick={changeViewAB}>
-                  Abilità
+                  <p className="titoloIcona">
+                    <img src={tools} />
+                    <p>Abilità</p>
+                  </p>
                 </div>
-                {!viewerAB && (
+                {viewerAB && (
                   <div className="viewer">
                     <Abilità
                       mod={modDes}
@@ -401,13 +429,34 @@ const Homepage = () => {
             {/*linguaggi*/}
             <div className="border containerlinguaggi">
               <div className="titolo border" onClick={changeViewLingue}>
-                Linguaggi conosciuti
+                <p className="titoloIcona">
+                  <img src={lips} />
+                  <p>Linguaggi conosciuti</p>
+                </p>
               </div>
               <ul>
-                {!viewerLingue && (
+                {viewerLingue && (
                   <div className="viewer">
                     {currentPG.linguaggi?.map((linguaggio, index) => (
                       <li key={index}>{linguaggio}</li>
+                    ))}
+                  </div>
+                )}
+              </ul>
+            </div>
+            {/*competenze*/}
+            <div className="border conteinerComp">
+              <div className="titolo border" onClick={changeViewComp}>
+                <p className="titoloIcona">
+                  <img src={idea} />
+                  <p>Competenze</p>
+                </p>
+              </div>
+              <ul>
+                {viewerComp && (
+                  <div className="viewer">
+                    {currentPG.competenze?.map((comp, index) => (
+                      <li key={index}>{comp.nome}</li>
                     ))}
                   </div>
                 )}
@@ -420,10 +469,16 @@ const Homepage = () => {
           >
             <div className="containerData border">
               <div className="border">
-                <div className="border titolo" onClick={changeViewArmor}>
-                  Classe armatura: {CA}
+                <div
+                  className="border titolo d-flex wrap-nowrap"
+                  onClick={changeViewArmor}
+                >
+                  <p className="titoloIcona">
+                    <img src={shield} />
+                    <p>Classe armatura: {CA}</p>
+                  </p>
                 </div>
-                {!viewerArmor && (
+                {viewerArmor && (
                   <div className="viewer">
                     {currentPG.armatura && (
                       <Armour armour={currentPG.armatura} />
@@ -445,9 +500,12 @@ const Homepage = () => {
             </div>
             <div className="containerArmor border">
               <div className="border titolo" onClick={changeViewArmi}>
-                Armi
+                <p className="titoloIcona">
+                  <img src={swords} />
+                  <p>Armi</p>
+                </p>
               </div>
-              {!viewerArmi && (
+              {viewerArmi && (
                 <div className="viewer">
                   {currentPG.armi?.map((arma, index) => (
                     <div className="border">
@@ -465,9 +523,12 @@ const Homepage = () => {
             </div>
             <div className="containerQuip border">
               <div className="border titolo" onClick={changeViewEquip}>
-                equipaggiamento
+                <p className="titoloIcona">
+                  <img src={bag} />
+                  <p>Equipaggiamento</p>
+                </p>
               </div>
-              {!viewerEquip && (
+              {viewerEquip && (
                 <div className="viewer">
                   {/* mappare l'equip */}
                   {currentPG.equipaggiamentoBase?.map(
@@ -480,9 +541,12 @@ const Homepage = () => {
                 </div>
               )}
               <div className="border titolo" onClick={changeViewGold}>
-                ricchezza
+                <p className="titoloIcona">
+                  <img src={shield} />
+                  <p>Ricchezza</p>
+                </p>
               </div>
-              {!viewerGold && (
+              {viewerGold && (
                 <div className="viewer">
                   <div>MR: {currentPG.monete_rame}</div>
                   <div>MA: {currentPG.monete_argento}</div>
@@ -498,9 +562,12 @@ const Homepage = () => {
           >
             <div className="containerNote border">
               <div className="border titolo" onClick={changeViewNOTE}>
-                note del personaggio
+                <p className="titoloIcona">
+                  <img src={pen} />
+                  <p>Note del personaggio</p>
+                </p>
               </div>
-              {!viewerNOTE && (
+              {viewerNOTE && (
                 <div className="viewer">
                   <div className="border">
                     <div>{currentPG.background}</div>
@@ -525,6 +592,26 @@ const Homepage = () => {
                   </div>
                 </div>
               )}
+            </div>
+            <div className="border conteinerComp">
+              <div className="titolo border" onClick={changeViewPET}>
+                <p className="titoloIcona">
+                  <img src={medals} />
+                  <p>Privilegi e tratti</p>
+                </p>
+              </div>
+              <ul>
+                {viewerPET && (
+                  <div className="viewer">
+                    {currentPG.privilegi?.map((privilegio, index) => (
+                      <li key={index}>
+                        {" "}
+                        <Privilegio index={index} privilegio={privilegio} />
+                      </li>
+                    ))}
+                  </div>
+                )}
+              </ul>
             </div>
           </Col>
         </Row>

@@ -19,7 +19,7 @@ const Armour = ({ armour }) => {
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            {armour.nome} : {armour.tipo}
+            {armour.nome} : {armour.tipo.nome}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

@@ -25,10 +25,12 @@ const TiriSalvezza = ({ mod, pg, stat }) => {
   };
 
   useEffect(() => {
-    const presente = pg.tsattivi.some(
-      (item) => item.statistica === stat.toLowerCase()
-    );
-    setIsChecked(presente);
+    if (pg.tsattivi !== null) {
+      const presente = pg.tsattivi.some(
+        (item) => item.statistica === stat.toLowerCase()
+      );
+      setIsChecked(presente);
+    }
   }, [pg.tsattivi, stat]);
 
   return (
