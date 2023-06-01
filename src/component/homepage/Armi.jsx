@@ -4,7 +4,7 @@ import { Form, Modal } from "react-bootstrap";
 
 const Armi = ({ index, arma, modFor, modDes, BComp }) => {
   let mod = 0;
-  switch (arma.tipo) {
+  switch (arma.tipo?.nome) {
     case "ARMA_DA_MISCHIA_SEMPLICE":
       mod = modFor;
       break;
@@ -37,25 +37,36 @@ const Armi = ({ index, arma, modFor, modDes, BComp }) => {
   };
 
   const [tiroPerColpire, setTiroPerColpire] = useState();
+  const [randomTPC, setRandomTPC] = useState();
   const [danno, setDanno] = useState();
+  const [tiroPerDanni, setTiroPerDdanni] = useState();
   const [showAttacco, setShowAttacco] = useState();
 
   const handleAttacco = () => {
-    let randomTPC = Math.floor(Math.random() * 20) + 1;
+    let TPC = 0;
+    let D20 = Math.floor(Math.random() * 20) + 1;
     if (isChecked) {
-      randomTPC += mod + BComp;
+      TPC = D20 + mod + BComp;
     } else {
-      randomTPC += mod;
+      TPC += D20 + mod;
     }
-    setTiroPerColpire(randomTPC);
+    setRandomTPC(D20);
+    setTiroPerColpire(TPC);
 
-    let randomDanno = 0;
-    for (let i = 0; i < arma.numeroDadi; i++) {
-      randomDanno += Math.floor(Math.random() * arma.danno.valore) + 1;
+    let dAttacco = 0;
+    if (randomTPC === 20) {
+      for (let i = 0; i < arma.numeroDadi * 2; i++) {
+        dAttacco += Math.floor(Math.random() * arma?.danno.valore) + 1;
+      }
+    } else {
+      for (let i = 0; i < arma.numeroDadi; i++) {
+        dAttacco += Math.floor(Math.random() * arma?.danno.valore) + 1;
+      }
     }
-    randomDanno += mod;
-    setDanno(randomDanno);
+    let totaleDanno = dAttacco + mod;
 
+    setTiroPerDdanni(dAttacco);
+    setDanno(totaleDanno);
     setShowAttacco(true);
   };
 
@@ -79,11 +90,11 @@ const Armi = ({ index, arma, modFor, modDes, BComp }) => {
               {isChecked && mod + BComp}
             </span>{" "}
             <span className="nome" onClick={handleClick}>
-              {arma.nome}
+              {arma?.nome}
             </span>
             <span className="danno" onClick={handleAttacco}>
-              {arma.numeroDadi}
-              {arma.danno.dado}
+              {arma?.numeroDadi}
+              {arma?.danno.dado}
             </span>
           </div>
         </Form>
@@ -92,18 +103,22 @@ const Armi = ({ index, arma, modFor, modDes, BComp }) => {
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            {arma.nome} : {arma.tipo.nome}
+            {arma?.nome} : {arma?.tipo.nome}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
-            danno: {arma.numeroDadi}
-            {arma.danno.dado}, {arma.tipoDanno}
+            danno: {arma?.numeroDadi}
+            {arma?.danno.dado}, {arma?.tipoDanno.tipo}
           </div>
         </Modal.Body>
         <Modal.Body>
           <div>descrizione:</div>
           <div> {arma.descrizione}</div>
+        </Modal.Body>
+        <Modal.Body>
+          <div>proprietà:</div>
+          <div> {arma.proprieta}</div>
         </Modal.Body>
         <Modal.Body>
           valore: {arma.costo} {arma.moneta}
@@ -117,8 +132,24 @@ const Armi = ({ index, arma, modFor, modDes, BComp }) => {
         <Modal.Header closeButton>
           <Modal.Title>attacci con: {arma.nome}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>tiro per colpire: {tiroPerColpire}</Modal.Body>
-        <Modal.Body>danni: {danno}</Modal.Body>
+        <Modal.Body>
+          {isChecked && (
+            <p>
+              tiro per colpire: (d20){randomTPC} + (stat){mod} + (b. comp)
+              {BComp} = {tiroPerColpire}
+            </p>
+          )}
+          {!isChecked && (
+            <p>
+              tiro per colpire: (d20){randomTPC} + (stat){mod} ={" "}
+              {tiroPerColpire}
+            </p>
+          )}
+        </Modal.Body>
+        <Modal.Body>
+          danni: ({arma.numeroDadi}D{arma.danno.valore}){tiroPerDanni} + stat:{" "}
+          {mod} = {danno}
+        </Modal.Body>
       </Modal>
     </>
   );

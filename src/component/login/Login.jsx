@@ -55,6 +55,7 @@ const Login = () => {
         console.log("data di login", data);
         dispatch({ type: "ADD_PG_LIST", payload: data.listaPG });
         console.log("data.personaggi di login", data.listaPG);
+        dispatch({ type: "SET_PG", payload: data.listaPG[0] });
         navigate("/homepage");
       } else {
         // gestione dell'errore

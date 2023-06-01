@@ -180,7 +180,6 @@ const Menu = () => {
         const data = await response.json();
         //dispatch({ type: "ADD_PG_LIST", payload: data });
         await dispatch({ type: "SET_PG", payload: data });
-        console.log("abilità?", newAbilita);
         setAggiorna(false);
         setShow(false);
         setCreatePG(false);
@@ -367,7 +366,6 @@ const Menu = () => {
                 value={newRazza}
                 onChange={(e) => setNewRazza(e.target.value)}
               >
-                <option value="">Seleziona una razza</option>
                 <option value="draconide">Draconide</option>
                 <option value="elfo">Elfo</option>
                 <option value="gnomo">Gnomo</option>
@@ -414,7 +412,6 @@ const Menu = () => {
                   )
                 }
               >
-                <option value="">Seleziona le tue abilità</option>
                 <option value="Acrobazia">Acrobazia</option>
                 <option value="Addestrare animali">Addestrare animali</option>
                 <option value="Arcano">Arcano</option>
