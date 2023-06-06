@@ -86,7 +86,6 @@ const Login = () => {
         const data = await response.text();
         console.log("questo è data della fetch REGISTER", data);
         postLogin();
-        return redirect("/homepage");
       } else {
         // gestione dell'errore
       }

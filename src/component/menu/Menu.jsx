@@ -258,7 +258,7 @@ const Menu = () => {
                     key={pg?.id}
                     onClick={() => clickIdPg(`${pg?.id}`)}
                   >
-                    {pg?.nomePG}, {pg?.id}
+                    {pg?.nomePG}
                   </NavDropdown.Item>
                 ))}
 

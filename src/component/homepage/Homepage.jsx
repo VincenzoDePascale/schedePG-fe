@@ -27,12 +27,17 @@ import close from "../../Assets/img/close.png";
 import lightbulb from "../../Assets/img/lightbulb.png";
 import pencil from "../../Assets/img/pencil.png";
 import heart from "../../Assets/img/heart.png";
+import editing from "../../Assets/img/editing.png";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Homepage = () => {
   const dispatch = useDispatch();
   const myProfile = useSelector((state) => state.main.myProfile);
   const token = useSelector((state) => state.main.myProfile.accessToken);
   const currentPG = useSelector((state) => state.main.PersonaggioCorrente);
+
+  const navigate = useNavigate();
+
   console.log("myProfile", myProfile);
 
   const [viewerTS, setViewerTS] = useState(true);
@@ -165,6 +170,79 @@ const Homepage = () => {
       modDes +
       (currentPG?.scudo != null ? currentPG.scudo?.classeArmatura : 0);
   }
+
+  // logica modale modifica statistiche
+
+  const [showModalStatistiche, setShowModalStatistiche] = useState(false);
+  const handleCloseModalStatistiche = () => setShowModalStatistiche(false);
+  const handleShowModalStatistiche = () => setShowModalStatistiche(true);
+
+  const clickModStatistiche = () => {
+    setModStatistiche(true);
+  };
+
+  const [modStatistiche, setModStatistiche] = useState(false);
+  const [newForza, setNewForza] = useState(currentPG?.forza);
+  const [newDestrezza, setNewDestrezza] = useState(currentPG?.destrezza);
+  const [newCostituzione, setNewCostituzione] = useState(
+    currentPG?.costituzione
+  );
+  const [newIntelligenza, setNewIntelligenza] = useState(
+    currentPG?.intelligenza
+  );
+  const [newSaggezza, setNewSaggezza] = useState(currentPG?.saggezza);
+  const [newCarisma, setNewCarisma] = useState(currentPG?.carisma);
+
+  const modificaStatistiche = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/pg/upgradeStatistiche",
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idPg: currentPG?.id,
+            forza: newForza,
+            destrezza: newDestrezza,
+            costituzione: newCostituzione,
+            intelligenza: newIntelligenza,
+            saggezza: newSaggezza,
+            carisma: newCarisma,
+          }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        await dispatch({ type: "SET_PG", payload: data });
+        setShowModalStatistiche(false);
+        setModStatistiche(false);
+      } else {
+        setShowModalStatistiche(false);
+        setModStatistiche(false);
+      }
+    } catch (error) {
+      // gestione dell'errore
+    }
+  };
+
+  useEffect(() => {
+    setNewForza(currentPG?.forza);
+    setNewDestrezza(currentPG?.destrezza);
+    setNewCostituzione(currentPG?.costituzione);
+    setNewIntelligenza(currentPG?.intelligenza);
+    setNewSaggezza(currentPG?.saggezza);
+    setNewCarisma(currentPG?.carisma);
+  }, [currentPG]);
+
+  useEffect(() => {
+    if (modStatistiche === true) {
+      modificaStatistiche();
+    }
+  }, [modStatistiche]);
 
   // modifica ispirazione
 
@@ -719,6 +797,7 @@ const Homepage = () => {
       if (response.ok) {
         setDellOK(false);
         dispatch({ type: "AGGIORNAMENTO", payload: false });
+        alert("il pg è stato cancellato");
       } else {
         // gestione dell'errore
       }
@@ -800,6 +879,11 @@ const Homepage = () => {
             <Col xs={4} md={2}>
               <Statistica stat={currentPG?.carisma} nome={`car`} />
             </Col>
+            <img
+              className="modifica"
+              src={editing}
+              onClick={handleShowModalStatistiche}
+            />
           </Row>
 
           <Row className="page">
@@ -1258,6 +1342,90 @@ const Homepage = () => {
           </Row>
         </div>
       )}
+
+      {/* modale modifica statistiche */}
+      <Modal show={showModalStatistiche} onHide={handleCloseModalStatistiche}>
+        <Modal.Header closeButton>
+          <Modal.Title>Spendi o guadagna monete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group className="mb-3" controlId="forza">
+            <Form.Label>Forza</Form.Label>
+            <div className="d-flex">
+              <Form.Control
+                className="flex-grow-1"
+                type="number"
+                placeholder="Inserisci il valore della forza"
+                value={newForza}
+                onChange={(e) => setNewForza(e.target.value)}
+              />
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="destrezza">
+            <Form.Label>Destrezza</Form.Label>
+            <div className="d-flex">
+              <Form.Control
+                type="number"
+                placeholder="Inserisci il valore della destrezza"
+                value={newDestrezza}
+                onChange={(e) => setNewDestrezza(e.target.value)}
+              />
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="costituzione">
+            <Form.Label>Costituzione</Form.Label>
+            <div className="d-flex">
+              <Form.Control
+                type="number"
+                placeholder="Inserisci il valore della costituzione"
+                value={newCostituzione}
+                onChange={(e) => setNewCostituzione(e.target.value)}
+              />
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="intelligenza">
+            <Form.Label>Intelligenza</Form.Label>
+            <div className="d-flex">
+              <Form.Control
+                type="number"
+                placeholder="Inserisci il valore dell'intelligenza"
+                value={newIntelligenza}
+                onChange={(e) => setNewIntelligenza(e.target.value)}
+              />
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="saggezza">
+            <Form.Label>Saggezza</Form.Label>
+            <div className="d-flex">
+              <Form.Control
+                type="number"
+                placeholder="Inserisci il valore della saggezza"
+                value={newSaggezza}
+                onChange={(e) => setNewSaggezza(e.target.value)}
+              />
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="carisma">
+            <Form.Label>Carisma</Form.Label>
+            <div className="d-flex">
+              <Form.Control
+                type="number"
+                placeholder="Inserisci il valore del carisma"
+                value={newCarisma}
+                onChange={(e) => setNewCarisma(e.target.value)}
+              />
+            </div>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModalStatistiche}>
+            Chiudi
+          </Button>
+          <Button variant="primary" onClick={() => clickModStatistiche()}>
+            conferma nuove statistiche
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {/* modale modifica armatura e scudi */}
       <Modal show={showModalArmor} onHide={handleCloseModalArmor}>

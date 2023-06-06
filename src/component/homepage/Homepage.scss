@@ -72,6 +72,15 @@
 .statistiche {
   margin: 0;
   padding: 5px 0;
+  position: relative;
+  .modifica {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px;
+    height: 30px;
+    width: 30px;
+  }
 }
 
 .page {
