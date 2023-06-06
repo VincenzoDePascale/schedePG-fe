@@ -2,7 +2,7 @@ import { Button, Container, Form, Row, InputGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "./Login.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
 
@@ -58,6 +58,7 @@ const Login = () => {
         dispatch({ type: "SET_PG", payload: data.listaPG[0] });
         navigate("/homepage");
       } else {
+        alert("nome utente o password errati");
         // gestione dell'errore
       }
     } catch (error) {

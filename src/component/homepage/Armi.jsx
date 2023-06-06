@@ -4,7 +4,7 @@ import { Form, Modal } from "react-bootstrap";
 
 const Armi = ({ index, arma, modFor, modDes, BComp }) => {
   let mod = 0;
-  switch (arma.tipo?.nome) {
+  switch (arma?.tipo?.nome) {
     case "ARMA_DA_MISCHIA_SEMPLICE":
       mod = modFor;
       break;
@@ -55,12 +55,12 @@ const Armi = ({ index, arma, modFor, modDes, BComp }) => {
 
     let dAttacco = 0;
     if (randomTPC === 20) {
-      for (let i = 0; i < arma.numeroDadi * 2; i++) {
-        dAttacco += Math.floor(Math.random() * arma?.danno.valore) + 1;
+      for (let i = 0; i < arma?.numeroDadi * 2; i++) {
+        dAttacco += Math.floor(Math.random() * arma?.danno?.valore) + 1;
       }
     } else {
-      for (let i = 0; i < arma.numeroDadi; i++) {
-        dAttacco += Math.floor(Math.random() * arma?.danno.valore) + 1;
+      for (let i = 0; i < arma?.numeroDadi; i++) {
+        dAttacco += Math.floor(Math.random() * arma?.danno?.valore) + 1;
       }
     }
     let totaleDanno = dAttacco + mod;
@@ -103,34 +103,34 @@ const Armi = ({ index, arma, modFor, modDes, BComp }) => {
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            {arma?.nome} : {arma?.tipo.nome}
+            {arma?.nome} : {arma?.tipo?.nome}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
             danno: {arma?.numeroDadi}
-            {arma?.danno.dado}, {arma?.tipoDanno.tipo}
+            {arma?.danno?.dado}, {arma?.tipoDanno?.tipo}
           </div>
         </Modal.Body>
         <Modal.Body>
           <div>descrizione:</div>
-          <div> {arma.descrizione}</div>
+          <div> {arma?.descrizione}</div>
         </Modal.Body>
         <Modal.Body>
           <div>proprietà:</div>
-          <div> {arma.proprieta}</div>
+          <div> {arma?.proprieta}</div>
         </Modal.Body>
         <Modal.Body>
-          valore: {arma.costo} {arma.moneta}
+          valore: {arma?.costo} {arma?.moneta}
         </Modal.Body>
         <Modal.Body>
-          <div>peso: {arma.peso}</div>
+          <div>peso: {arma?.peso}</div>
         </Modal.Body>
       </Modal>
 
       <Modal show={showAttacco} onHide={handleCloseAttacco} centered>
         <Modal.Header closeButton>
-          <Modal.Title>attacci con: {arma.nome}</Modal.Title>
+          <Modal.Title>attacci con: {arma?.nome}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {isChecked && (
@@ -147,8 +147,8 @@ const Armi = ({ index, arma, modFor, modDes, BComp }) => {
           )}
         </Modal.Body>
         <Modal.Body>
-          danni: ({arma.numeroDadi}D{arma.danno.valore}){tiroPerDanni} + stat:{" "}
-          {mod} = {danno}
+          danni: ({arma?.numeroDadi}D{arma?.danno?.valore}){tiroPerDanni} +
+          stat: {mod} = {danno}
         </Modal.Body>
       </Modal>
     </>

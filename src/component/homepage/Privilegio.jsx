@@ -13,14 +13,14 @@ const Privilegio = ({ index, privilegio }) => {
   };
   return (
     <>
-      <div onClick={handleClick}>{privilegio.nome}</div>
+      <div onClick={handleClick}>{privilegio?.nome}</div>
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>{privilegio.nome}</Modal.Title>
+          <Modal.Title>{privilegio?.nome}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>descrizione:</div>
-          <div> {privilegio.descrizione}</div>
+          <div> {privilegio?.descrizione}</div>
         </Modal.Body>
       </Modal>
     </>

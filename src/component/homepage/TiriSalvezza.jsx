@@ -25,13 +25,13 @@ const TiriSalvezza = ({ mod, pg, stat }) => {
   };
 
   useEffect(() => {
-    if (pg.tsattivi !== null) {
-      const presente = pg.tsattivi.some(
-        (item) => item.statistica === stat.toLowerCase()
+    if (pg?.tsattivi !== null) {
+      const presente = pg?.tsattivi?.some(
+        (item) => item?.statistica === stat?.toLowerCase()
       );
       setIsChecked(presente);
     }
-  }, [pg.tsattivi, stat]);
+  }, [pg?.tsattivi, stat]);
 
   return (
     <>

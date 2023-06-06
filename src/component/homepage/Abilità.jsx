@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./Abilità.scss";
 
 const Abilità = ({ mod, pg, abilità, stat }) => {
-  let BComp = pg.bonusCompetenza;
+  let BComp = pg?.bonusCompetenza;
   const [isChecked, setIsChecked] = useState(false);
 
   const handleChange = () => {
@@ -25,11 +25,11 @@ const Abilità = ({ mod, pg, abilità, stat }) => {
   };
 
   useEffect(() => {
-    if (pg.abilitaAttive !== null) {
-      const presente = pg.abilitaAttive.includes(abilità);
+    if (pg?.abilitaAttive !== null) {
+      const presente = pg?.abilitaAttive?.includes(abilità);
       setIsChecked(presente);
     }
-  }, [pg.abilitaAttive, abilità]);
+  }, [pg?.abilitaAttive, abilità]);
 
   return (
     <>

@@ -1,0 +1,18 @@
+.intestazione {
+  align-items: center;
+  p {
+    width: 100%;
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    span {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .valore {
+      font-weight: bold;
+      align-self: end;
+    }
+  }
+}

@@ -2,8 +2,14 @@
   padding: 20px;
 }
 
+.bTop {
+  border-top: 2px solid black;
+}
+
 .intestazione {
+  align-items: center;
   p {
+    width: 100%;
     border-bottom: 1px solid black;
     display: flex;
     flex-wrap: nowrap;
@@ -24,11 +30,13 @@
   align-self: center;
   justify-content: center;
   .nomePG {
+    justify-content: center;
     font-style: italic;
     font-weight: bold;
     font-size: 1.8em;
   }
 }
+
 .titolo {
   font-weight: bold;
   margin-bottom: 10px;
@@ -44,22 +52,48 @@
 }
 
 .titoloIcona {
-  width: 90%;
+  width: 100%;
   font-size: 1.2;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   img {
+    padding: 0 5px 0 5px;
     height: 20px;
     margin: 0;
   }
   span {
-    padding-left: 10px;
-    padding-right: 10px;
+    white-space: nowrap;
     margin: 0;
   }
 }
+
+.statistiche {
+  margin: 0;
+  padding: 5px 0;
+}
+
+.page {
+  margin: 0;
+  padding: 5px 0;
+  align-items: start;
+  .colonna {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+}
+
+.options {
+  border-top: 2px solid black;
+  padding: 10px 0;
+  Button {
+  }
+}
+
 .containerTS {
   display: flex;
   flex-direction: column;
@@ -147,6 +181,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin: 0px;
   .border {
     display: flex;
     align-items: center;
@@ -184,6 +219,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin: 0px;
   .border {
     display: flex;
     justify-content: center;
@@ -202,6 +238,14 @@
     .border {
       flex-direction: column;
       align-items: center;
+      .testo {
+        text-align: center;
+        padding: 5px;
+      }
+      .titolo {
+        padding: 5px;
+        margin: 0px;
+      }
     }
   }
 }

@@ -15,25 +15,25 @@ const Armour = ({ armour }) => {
   };
   return (
     <>
-      <div onClick={handleClick}>{armour.nome}</div>
+      <div onClick={handleClick}>{armour?.nome}</div>
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            {armour.nome} : {armour.tipo.nome}
+            {armour?.nome} : {armour?.tipo?.nome}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div>Classe armatura: {armour.classeArmatura}</div>
+          <div>Classe armatura: {armour?.classeArmatura}</div>
         </Modal.Body>
         <Modal.Body>
           <div>descrizione:</div>
-          <div> {armour.descrizione}</div>
+          <div> {armour?.descrizione}</div>
         </Modal.Body>
         <Modal.Body>
-          valore: {armour.costo} {armour.moneta}
+          valore: {armour?.costo} {armour?.moneta}
         </Modal.Body>
         <Modal.Body>
-          <div>peso: {armour.peso}</div>
+          <div>peso: {armour?.peso}</div>
         </Modal.Body>
       </Modal>
     </>

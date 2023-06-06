@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import "./Homepage.scss";
-import Menu from "../menu/Menu";
 import Statistica from "./Statistica";
 import TiriSalvezza from "./TiriSalvezza";
 import Abilità from "./Abilità";
@@ -11,6 +10,8 @@ import Equipaggiamento from "./Equipaggiamento";
 import Armour from "./Armour";
 import Armi from "./Armi";
 import Privilegio from "./Privilegio";
+
+import PaginaIncantesimi from "./PaginaIncantesimi";
 
 import shield from "../../Assets/img/shield.png";
 import swords from "../../Assets/img/swords.png";
@@ -25,6 +26,7 @@ import money from "../../Assets/img/money.png";
 import close from "../../Assets/img/close.png";
 import lightbulb from "../../Assets/img/lightbulb.png";
 import pencil from "../../Assets/img/pencil.png";
+import heart from "../../Assets/img/heart.png";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -36,6 +38,11 @@ const Homepage = () => {
   const [viewerTS, setViewerTS] = useState(true);
   const changeViewTS = () => {
     setViewerTS(!viewerTS);
+  };
+
+  const [viewerVita, setViewerVita] = useState(true);
+  const changeViewVita = () => {
+    setViewerVita(!viewerVita);
   };
 
   const [viewerAB, setViewerAB] = useState(true);
@@ -102,6 +109,17 @@ const Homepage = () => {
   let modCar =
     currentPG !== undefined ? Math.floor((currentPG?.carisma - 10) / 2.0) : 0;
 
+  // calcolo percezione passiva
+
+  let percezionePassiva = 0;
+  let BonusComp = currentPG?.bonusCompetenza;
+
+  if (currentPG?.abilitaAttive?.includes(`Percezione`)) {
+    percezionePassiva = 10 + modSag + BonusComp;
+  } else {
+    percezionePassiva = 10 + modSag;
+  }
+
   // punti esperienza per salire al prossimo livello
 
   const pxLivello = [
@@ -112,31 +130,31 @@ const Homepage = () => {
   // calcolo classe armatura
 
   let CA;
-  if (currentPG.armatura != null) {
-    switch (currentPG?.armatura.tipo.nome) {
+  if (currentPG?.armatura != null) {
+    switch (currentPG?.armatura?.tipo?.nome) {
       case "armatura leggera":
         CA =
-          currentPG?.armatura.classeArmatura +
-          (currentPG?.scudo != null ? currentPG?.scudo.classeArmatura : 0) +
+          currentPG?.armatura?.classeArmatura +
+          (currentPG?.scudo != null ? currentPG?.scudo?.classeArmatura : 0) +
           modDes;
         break;
       case "armatura media":
         if (modDes > 2) {
           CA =
-            currentPG?.armatura.classeArmatura +
-            (currentPG?.scudo != null ? currentPG?.scudo.classeArmatura : 0) +
+            currentPG?.armatura?.classeArmatura +
+            (currentPG?.scudo != null ? currentPG?.scudo?.classeArmatura : 0) +
             2;
         } else {
           CA =
-            currentPG.armatura.classeArmatura +
-            (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0) +
+            currentPG?.armatura?.classeArmatura +
+            (currentPG?.scudo != null ? currentPG?.scudo?.classeArmatura : 0) +
             modDes;
         }
         break;
       case "armatura pesante":
         CA =
-          currentPG.armatura.classeArmatura +
-          (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0);
+          currentPG?.armatura?.classeArmatura +
+          (currentPG?.scudo != null ? currentPG?.scudo?.classeArmatura : 0);
         break;
       default:
         break;
@@ -145,7 +163,7 @@ const Homepage = () => {
     CA =
       10 +
       modDes +
-      (currentPG.scudo != null ? currentPG.scudo.classeArmatura : 0);
+      (currentPG?.scudo != null ? currentPG.scudo?.classeArmatura : 0);
   }
 
   // modifica ispirazione
@@ -155,10 +173,10 @@ const Homepage = () => {
     setViewerIspirazione(!viewerIspirazione);
   };
 
-  const [newIspirazione, setNewIspirazione] = useState(currentPG.ispirazione);
+  const [newIspirazione, setNewIspirazione] = useState(currentPG?.ispirazione);
 
   const attivaIspirazione = () => {
-    setNewIspirazione(!currentPG.ispirazione);
+    setNewIspirazione(!currentPG?.ispirazione);
     modificaIspirazione();
   };
 
@@ -174,7 +192,7 @@ const Homepage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idPg: currentPG.id,
+            idPg: currentPG?.id,
             ispirazione: newIspirazione,
           }),
         }
@@ -222,7 +240,7 @@ const Homepage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          idPg: currentPG.id,
+          idPg: currentPG?.id,
           tiriSalvezza: newTS,
         }),
       });
@@ -271,7 +289,7 @@ const Homepage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idPg: currentPG.id,
+            idPg: currentPG?.id,
             abilita: newAbilita,
           }),
         }
@@ -321,7 +339,7 @@ const Homepage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idPg: currentPG.id,
+            idPg: currentPG?.id,
             linguaggi: newLinguaggi,
           }),
         }
@@ -371,7 +389,7 @@ const Homepage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idPg: currentPG.id,
+            idPg: currentPG?.id,
             competenze: newCompetenze,
           }),
         }
@@ -407,8 +425,8 @@ const Homepage = () => {
   };
 
   const [modArmatura, setModArmatura] = useState(false);
-  const [newArmatura, setNewArmatura] = useState(currentPG.armatura?.nome);
-  const [newScudo, setNewScudo] = useState(currentPG.scudo?.nome);
+  const [newArmatura, setNewArmatura] = useState(currentPG?.armatura?.nome);
+  const [newScudo, setNewScudo] = useState(currentPG?.scudo?.nome);
 
   const modificaArmor = async () => {
     try {
@@ -422,7 +440,7 @@ const Homepage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idPg: currentPG.id,
+            idPg: currentPG?.id,
             armatura: newArmatura,
             scudo: newScudo,
           }),
@@ -443,10 +461,78 @@ const Homepage = () => {
   };
 
   useEffect(() => {
+    setNewArmatura(currentPG?.armatura?.nome);
+    if (currentPG?.scudo?.nome == null) {
+      setNewScudo("");
+    } else {
+      setNewScudo(currentPG?.scudo?.nome);
+    }
+  }, [currentPG]);
+
+  useEffect(() => {
     if (modArmatura === true) {
       modificaArmor();
     }
   }, [modArmatura]);
+
+  // logica modale modifica vita
+
+  const [showModalVita, setShowModalVita] = useState(false);
+  const handleCloseModalVita = () => setShowModalVita(false);
+  const handleShowModalVita = () => setShowModalVita(true);
+
+  const clickModVita = () => {
+    setModVita(true);
+  };
+
+  const [modVita, setModVita] = useState(false);
+  const [newPfMassimi, setNewPfMassimi] = useState(currentPG?.pf_max);
+  const [newPfAttuali, setNewPfAttuali] = useState(currentPG?.pf);
+  const [newPfTemporanei, setNewPfTemporanei] = useState(
+    currentPG?.pf_temporanei
+  );
+
+  const modificaVita = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/pg/upgradeVita", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          idPg: currentPG.id,
+          pfMassimi: newPfMassimi,
+          pfAttuali: newPfAttuali,
+          pfTemporanei: newPfTemporanei,
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        await dispatch({ type: "SET_PG", payload: data });
+        setShowModalVita(false);
+        setModVita(false);
+      } else {
+        setShowModalVita(false);
+        setModVita(false);
+      }
+    } catch (error) {
+      // gestione dell'errore
+    }
+  };
+
+  useEffect(() => {
+    setNewPfMassimi(currentPG?.pf_max);
+    setNewPfAttuali(currentPG?.pf);
+    setNewPfTemporanei(currentPG?.pf_temporanei);
+  }, [currentPG]);
+
+  useEffect(() => {
+    if (modVita === true) {
+      modificaVita();
+    }
+  }, [modVita]);
 
   // logica modale modifica ricchezza
 
@@ -459,10 +545,10 @@ const Homepage = () => {
   };
 
   const [modMonete, setModMonete] = useState(false);
-  const [newMR, setNewMR] = useState(currentPG.monete_rame);
-  const [newMA, setNewMA] = useState(currentPG.monete_argento);
-  const [newMO, setNewMO] = useState(currentPG.monete_oro);
-  const [newMP, setNewMP] = useState(currentPG.monete_platino);
+  const [newMR, setNewMR] = useState(currentPG?.monete_rame);
+  const [newMA, setNewMA] = useState(currentPG?.monete_argento);
+  const [newMO, setNewMO] = useState(currentPG?.monete_oro);
+  const [newMP, setNewMP] = useState(currentPG?.monete_platino);
 
   const modificaMonete = async () => {
     try {
@@ -476,7 +562,7 @@ const Homepage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idPg: currentPG.id,
+            idPg: currentPG?.id,
             moneteRame: newMR,
             moneteArgento: newMA,
             moneteOro: newMO,
@@ -499,6 +585,13 @@ const Homepage = () => {
   };
 
   useEffect(() => {
+    setNewMR(currentPG?.monete_rame);
+    setNewMA(currentPG?.monete_argento);
+    setNewMO(currentPG?.monete_oro);
+    setNewMP(currentPG?.monete_platino);
+  }, [currentPG]);
+
+  useEffect(() => {
     if (modMonete === true) {
       modificaMonete();
     }
@@ -515,13 +608,13 @@ const Homepage = () => {
   };
 
   const [modNote, setModNote] = useState(false);
-  const [newBackground, setNewBackground] = useState(currentPG.background);
+  const [newBackground, setNewBackground] = useState(currentPG?.background);
   const [newTrattiCaratteriali, setNewTrattiCaratteriali] = useState(
-    currentPG.tratti_caratteriali
+    currentPG?.tratti_caratteriali
   );
-  const [newIdeali, setNewIdeali] = useState(currentPG.ideali);
-  const [newLegami, setNewLegami] = useState(currentPG.legami);
-  const [newDifetti, setNewDifetti] = useState(currentPG.difetti);
+  const [newIdeali, setNewIdeali] = useState(currentPG?.ideali);
+  const [newLegami, setNewLegami] = useState(currentPG?.legami);
+  const [newDifetti, setNewDifetti] = useState(currentPG?.difetti);
 
   const modificaNote = async () => {
     try {
@@ -533,7 +626,7 @@ const Homepage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          idPg: currentPG.id,
+          idPg: currentPG?.id,
           background: newBackground,
           tratti_caratteriali: newTrattiCaratteriali,
           ideali: newIdeali,
@@ -556,10 +649,47 @@ const Homepage = () => {
   };
 
   useEffect(() => {
+    setNewBackground(currentPG?.background);
+    setNewTrattiCaratteriali(currentPG?.tratti_caratteriali);
+    setNewIdeali(currentPG?.ideali);
+    setNewLegami(currentPG?.legami);
+    setNewDifetti(currentPG?.difetti);
+  }, [currentPG]);
+
+  useEffect(() => {
     if (modNote === true) {
       modificaNote();
     }
   }, [modNote]);
+
+  //visibilità pagina incantesimi
+
+  const [siInsantesimi, setSiIncantesimi] = useState(false);
+
+  useEffect(() => {
+    switch (currentPG?.classe?.classe) {
+      case "bardo":
+        setSiIncantesimi(true);
+        break;
+      case "chierico":
+        setSiIncantesimi(true);
+        break;
+      case "druido":
+        setSiIncantesimi(true);
+        break;
+      case "mago":
+        setSiIncantesimi(true);
+        break;
+      case "stregone":
+        setSiIncantesimi(true);
+        break;
+      case "warlock":
+        setSiIncantesimi(true);
+        break;
+      default:
+        setSiIncantesimi(false);
+    }
+  }, [currentPG]);
 
   // calncella PG
 
@@ -605,492 +735,529 @@ const Homepage = () => {
 
   return (
     <>
-      <Menu />
-      <div className="contAll">
-        {/* intestazione */}
-        <Row className="intestazione align-items-center">
-          <Col xs={12} lg={4}>
-            <div className="nomeDelPersonaggio">
-              <p>
-                <span className="parametro">Nome del personaggio:</span>{" "}
-                <span className="nomePG">{currentPG?.nomePG}</span>
-              </p>
-            </div>
-          </Col>
-          <Col xs={12} md={6} lg={4}>
-            <div>
-              <p>
-                <span className="parametro">Classe e livello:</span>{" "}
-                <span className="valore">
-                  {currentPG?.classe.classe}, {currentPG?.livello}
-                </span>
-              </p>
-
-              <p>
-                <span className="parametro">Razza:</span>{" "}
-                <span className="valore">{currentPG?.razza.razza}</span>
-              </p>
-            </div>
-          </Col>
-          <Col xs={12} md={6} lg={4}>
-            <div>
-              <p>
-                <span className="parametro">allineamento:</span>{" "}
-                <span className="valore">{currentPG?.allineamento.tipo} </span>
-              </p>
-              <p>
-                <span className="parametro">Punti espezienza:</span>{" "}
-                <span className="valore">
-                  {currentPG?.puntiExp} / {pxLivello[currentPG?.livello]}{" "}
-                </span>
-              </p>
-            </div>
-          </Col>
-        </Row>
-        {/* statistiche */}
-        <Row className="m-0 pt-2 pb-2">
-          <Col xs={4} md={2}>
-            <Statistica stat={currentPG?.forza} nome={`for`} />
-          </Col>
-          <Col xs={4} md={2}>
-            <Statistica stat={currentPG?.destrezza} nome={`des`} />
-          </Col>
-          <Col xs={4} md={2}>
-            <Statistica stat={currentPG?.costituzione} nome={`cos`} />
-          </Col>
-          <Col xs={4} md={2}>
-            <Statistica stat={currentPG?.intelligenza} nome={`int`} />
-          </Col>
-          <Col xs={4} md={2}>
-            <Statistica stat={currentPG?.saggezza} nome={`sag`} />
-          </Col>
-          <Col xs={4} md={2}>
-            <Statistica stat={currentPG?.carisma} nome={`car`} />
-          </Col>
-        </Row>
-
-        <Row className="m-0 d-flex align-items-start">
-          <Col
-            lg={4}
-            className="d-flex flex-column justify-content-center align-items-center"
-          >
-            <div className="containerTS border m-0">
-              {/*ispirazione*/}
-              <div className="isp border" onClick={changeViewIspirazione}>
-                <span>Ispirazione</span>
-                {viewerIspirazione && (
-                  <span>
-                    {currentPG?.ispirazione}
-                    <img src={lightbulb} alt="hai ispirazione" />
+      {/* <Menu /> */}
+      {currentPG && (
+        <div className="contAll">
+          {/* intestazione */}
+          <Row className="intestazione">
+            <Col xs={12} lg={4}>
+              <div className="nomeDelPersonaggio">
+                <p>
+                  <span className="parametro">Nome del personaggio:</span>{" "}
+                  <span className="nomePG">{currentPG?.nomePG}</span>
+                </p>
+              </div>
+            </Col>
+            <Col xs={12} md={6} lg={4}>
+              <div>
+                <p>
+                  <span className="parametro">Classe e livello:</span>{" "}
+                  <span className="valore">
+                    {currentPG?.classe?.classe}, {currentPG?.livello}
                   </span>
-                )}
-                {!viewerIspirazione && (
-                  <span>
-                    {currentPG?.ispirazione}
-                    <img src={close} alt="non hai ispirazione" />
+                </p>
+
+                <p>
+                  <span className="parametro">Razza:</span>{" "}
+                  <span className="valore">{currentPG?.razza?.razza}</span>
+                </p>
+              </div>
+            </Col>
+            <Col xs={12} md={6} lg={4}>
+              <div>
+                <p>
+                  <span className="parametro">allineamento:</span>{" "}
+                  <span className="valore">
+                    {currentPG?.allineamento?.tipo}{" "}
                   </span>
-                )}
-              </div>
-              {/*bonus competenza*/}
-              <div className="BComp border">
-                <span>Bonus competenza</span>
-                <span>{currentPG?.bonusCompetenza}</span>
-              </div>
-              {/*tiri salvezza*/}
-              <div className="border listTS">
-                <div className="titolo border">
-                  <p className="titoloIcona">
-                    <img src={escape} alt="Tiri Salvezza" />
-                    <span onClick={changeViewTS}>Tiri Salvezza</span>
-                    <img
-                      src={pencil}
-                      alt="cambio classe armatura"
-                      onClick={handleShowModalTS}
-                    />
-                  </p>
-                </div>
-                {viewerTS && (
-                  <div className="viewer">
-                    <TiriSalvezza mod={modFor} pg={currentPG} stat={`forza`} />
-                    <TiriSalvezza
-                      mod={modDes}
-                      pg={currentPG}
-                      stat={`Destrezza`}
-                    />
-                    <TiriSalvezza
-                      mod={modCos}
-                      pg={currentPG}
-                      stat={`Costituzione`}
-                    />
-                    <TiriSalvezza
-                      mod={modInt}
-                      pg={currentPG}
-                      stat={`Intelligenza`}
-                    />
-                    <TiriSalvezza
-                      mod={modSag}
-                      pg={currentPG}
-                      stat={`Saggezza`}
-                    />
-                    <TiriSalvezza
-                      mod={modCar}
-                      pg={currentPG}
-                      stat={`Carisma`}
-                    />
-                  </div>
-                )}
-              </div>
-              {/*abilità*/}
-              <div className="border listAB">
-                <div className="titolo border">
-                  <p className="titoloIcona">
-                    <img src={tools} alt="Abilità" />
-                    <span onClick={changeViewAB}>Abilità</span>
-                    <img
-                      src={pencil}
-                      alt="cambio classe armatura"
-                      onClick={handleShowModalAbilita}
-                    />
-                  </p>
-                </div>
-                {viewerAB && (
-                  <div className="viewer">
-                    <Abilità
-                      mod={modDes}
-                      pg={currentPG}
-                      abilità={`Acrobazia`}
-                      stat={`des`}
-                    />
-                    <Abilità
-                      mod={modSag}
-                      pg={currentPG}
-                      abilità={`Addestrare animali`}
-                      stat={`sag`}
-                    />
-                    <Abilità
-                      mod={modInt}
-                      pg={currentPG}
-                      abilità={`Arcano`}
-                      stat={`int`}
-                    />
-                    <Abilità
-                      mod={modFor}
-                      pg={currentPG}
-                      abilità={`Atletica`}
-                      stat={`for`}
-                    />
-                    <Abilità
-                      mod={modDes}
-                      pg={currentPG}
-                      abilità={`Furtività`}
-                      stat={`des`}
-                    />
-                    <Abilità
-                      mod={modInt}
-                      pg={currentPG}
-                      abilità={`Indagare`}
-                      stat={`int`}
-                    />
-                    <Abilità
-                      mod={modCar}
-                      pg={currentPG}
-                      abilità={`Inganno`}
-                      stat={`car`}
-                    />
-                    <Abilità
-                      mod={modCar}
-                      pg={currentPG}
-                      abilità={`Intimidire`}
-                      stat={`car`}
-                    />
-                    <Abilità
-                      mod={modCar}
-                      pg={currentPG}
-                      abilità={`Intrattenere`}
-                      stat={`car`}
-                    />
-                    <Abilità
-                      mod={modSag}
-                      pg={currentPG}
-                      abilità={`Intuizione`}
-                      stat={`sag`}
-                    />
-                    <Abilità
-                      mod={modSag}
-                      pg={currentPG}
-                      abilità={`Medicina`}
-                      stat={`sag`}
-                    />
-                    <Abilità
-                      mod={modInt}
-                      pg={currentPG}
-                      abilità={`Natura`}
-                      stat={`int`}
-                    />
-                    <Abilità
-                      mod={modSag}
-                      pg={currentPG}
-                      abilità={`Percezione`}
-                      stat={`sag`}
-                    />
-                    <Abilità
-                      mod={modCar}
-                      pg={currentPG}
-                      abilità={`Persuasione`}
-                      stat={`car`}
-                    />
-                    <Abilità
-                      mod={modDes}
-                      pg={currentPG}
-                      abilità={`Rapidità di mano`}
-                      stat={`des`}
-                    />
-                    <Abilità
-                      mod={modInt}
-                      pg={currentPG}
-                      abilità={`Religione`}
-                      stat={`int`}
-                    />
-                    <Abilità
-                      mod={modSag}
-                      pg={currentPG}
-                      abilità={`Sopravvivenza`}
-                      stat={`sag`}
-                    />
-                    <Abilità
-                      mod={modInt}
-                      pg={currentPG}
-                      abilità={`Storia`}
-                      stat={`int`}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-            {/*linguaggi*/}
-            <div className="border containerlinguaggi">
-              <div className="titolo border" onClick={changeViewLingue}>
-                <p className="titoloIcona">
-                  <img src={lips} alt="Linguaggi conosciuti" />
-                  <span onClick={changeViewLingue}>Linguaggi conosciuti</span>
-                  <img
-                    src={pencil}
-                    alt="cambio classe armatura"
-                    onClick={handleShowModalLinguaggi}
-                  />
+                </p>
+                <p>
+                  <span className="parametro">Punti espezienza:</span>{" "}
+                  <span className="valore">
+                    {currentPG?.puntiExp} / {pxLivello[currentPG?.livello]}{" "}
+                  </span>
                 </p>
               </div>
-              <ul>
-                {viewerLingue && (
-                  <div className="viewer">
-                    {currentPG?.linguaggi?.map((linguaggio, index) => (
-                      <li key={index}>{linguaggio.lingua}</li>
-                    ))}
-                  </div>
-                )}
-              </ul>
-            </div>
-            {/*competenze*/}
-            <div className="border conteinerComp">
-              <div className="titolo border">
-                <p className="titoloIcona">
-                  <img src={idea} alt="Competenze" />
-                  <span onClick={changeViewComp}>Competenze</span>
-                  <img
-                    src={pencil}
-                    alt="cambio classe armatura"
-                    onClick={handleShowModalCompetenze}
-                  />
-                </p>
-              </div>
-              <ul>
-                {viewerComp && (
-                  <div className="viewer">
-                    {currentPG.competenze?.map((comp, index) => (
-                      <li key={index}>{comp.nome}</li>
-                    ))}
-                  </div>
-                )}
-              </ul>
-            </div>
-          </Col>
-          <Col
-            lg={4}
-            className="d-flex flex-column justify-content-center align-items-center"
-          >
-            {/*armatura, iniziativa, velocità, pf, dado vita*/}
-            <div className="containerData border">
-              <div className="border">
-                <div className="border titolo d-flex wrap-nowrap">
-                  <p className="titoloIcona">
-                    <img src={shield} alt="Classe armatura" />
-                    <span onClick={changeViewArmor}>Classe armatura: {CA}</span>
-                    <img
-                      src={pencil}
-                      alt="cambio classe armatura"
-                      onClick={handleShowModalArmor}
-                    />
-                  </p>
-                </div>
-                {viewerArmor && (
-                  <div className="viewer">
-                    {currentPG?.armatura && (
-                      <Armour armour={currentPG?.armatura} />
-                    )}
-                    {currentPG?.scudo && <Armour armour={currentPG?.scudo} />}
-                  </div>
-                )}
-              </div>
-              <div className="border">iniziativa: {currentPG?.iniziativa}</div>
-              <div className="border">velocità: {currentPG?.velocita}</div>
-              <div className="border">
-                <div>PF massimi: {currentPG?.pf_max}</div>
-                <div>PF attuali: {currentPG?.pf}</div>
-                <div>PF temporanei: {currentPG?.pf_temporanei}</div>
-              </div>
-              <div className="border">
-                dado vita: {currentPG?.dado_vita?.dado}
-              </div>
-            </div>
-            {/*armi*/}
-            <div className="containerArmor border">
-              <div className="border titolo" onClick={changeViewArmi}>
-                <p className="titoloIcona">
-                  <img src={swords} alt="Armi" />
-                  <span>Armi</span>
-                </p>
-              </div>
-              {viewerArmi && (
-                <div className="viewer">
-                  {currentPG?.armi?.map((arma, index) => (
-                    <div className="border">
-                      <Armi
-                        key={index}
-                        arma={arma}
-                        modFor={modFor}
-                        modDes={modDes}
-                        BComp={currentPG?.bonusCompetenza}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            {/*equipaggiamento, ricchezza*/}
-            <div className="containerQuip border">
-              <div className="border titolo" onClick={changeViewEquip}>
-                <p className="titoloIcona">
-                  <img src={bag} alt="Equipaggiamento" />
-                  <span>Equipaggiamento</span>
-                </p>
-              </div>
-              {viewerEquip && (
-                <div className="viewer">
-                  {currentPG?.equipaggiamentoBase?.map(
-                    (equipaggiamento, index) => (
-                      <div className="border">
-                        <Equipaggiamento key={index} equip={equipaggiamento} />
-                      </div>
-                    )
+            </Col>
+          </Row>
+          {/* statistiche */}
+          <Row className="statistiche">
+            <Col xs={4} md={2}>
+              <Statistica stat={currentPG?.forza} nome={`for`} />
+            </Col>
+            <Col xs={4} md={2}>
+              <Statistica stat={currentPG?.destrezza} nome={`des`} />
+            </Col>
+            <Col xs={4} md={2}>
+              <Statistica stat={currentPG?.costituzione} nome={`cos`} />
+            </Col>
+            <Col xs={4} md={2}>
+              <Statistica stat={currentPG?.intelligenza} nome={`int`} />
+            </Col>
+            <Col xs={4} md={2}>
+              <Statistica stat={currentPG?.saggezza} nome={`sag`} />
+            </Col>
+            <Col xs={4} md={2}>
+              <Statistica stat={currentPG?.carisma} nome={`car`} />
+            </Col>
+          </Row>
+
+          <Row className="page">
+            <Col lg={4} className="colonna">
+              <div className="containerTS border m-0">
+                {/*ispirazione*/}
+                <div className="isp border" onClick={changeViewIspirazione}>
+                  <span>Ispirazione</span>
+                  {viewerIspirazione && (
+                    <span>
+                      {currentPG?.ispirazione}
+                      <img src={lightbulb} alt="hai ispirazione" />
+                    </span>
+                  )}
+                  {!viewerIspirazione && (
+                    <span>
+                      {currentPG?.ispirazione}
+                      <img src={close} alt="non hai ispirazione" />
+                    </span>
                   )}
                 </div>
-              )}
-              <div className="border titolo">
-                <p className="titoloIcona">
-                  <img src={money} alt="Ricchezza" />
-                  <span onClick={changeViewGold}>Ricchezza</span>
-                  <img
-                    src={pencil}
-                    alt="cambio classe armatura"
-                    onClick={handleShowModalMonete}
-                  />
-                </p>
-              </div>
-              {viewerGold && (
-                <div className="viewer">
-                  <div>MR: {currentPG?.monete_rame}</div>
-                  <div>MA: {currentPG?.monete_argento}</div>
-                  <div>MO: {currentPG?.monete_oro}</div>
-                  <div>MP: {currentPG?.monete_platino}</div>
+                {/*bonus competenza*/}
+                <div className="BComp border">
+                  <span>Bonus competenza</span>
+                  <span>{currentPG?.bonusCompetenza}</span>
                 </div>
-              )}
-            </div>
-          </Col>
-          <Col
-            lg={4}
-            className="d-flex flex-column justify-content-center align-items-center"
-          >
-            {/*note del personaggio*/}
-            <div className="containerNote border">
-              <div className="border titolo">
-                <p className="titoloIcona">
-                  <img src={pen} alt="Note del personaggio" />
-                  <span onClick={changeViewNOTE}>Note del personaggio</span>
-                  <img
-                    src={pencil}
-                    alt="cambio classe armatura"
-                    onClick={handleShowModalNote}
-                  />
-                </p>
-              </div>
-              {viewerNOTE && (
-                <div className="viewer">
-                  <div className="border">
-                    <div>{currentPG?.background}</div>
-                    <div className="titolo">background</div>
+                {/*tiri salvezza*/}
+                <div className="border listTS">
+                  <div className="titolo border">
+                    <p className="titoloIcona">
+                      <img src={escape} alt="Tiri Salvezza" />
+                      <span onClick={changeViewTS}>Tiri Salvezza</span>
+                      <img
+                        src={pencil}
+                        alt="cambio classe armatura"
+                        onClick={handleShowModalTS}
+                      />
+                    </p>
                   </div>
-                  <div className="border">
-                    <div>{currentPG?.tratti_caratteriali}</div>
-                    <div className="titolo">tratti caratteriali</div>
-                  </div>
-
-                  <div className="border">
-                    <div>{currentPG?.ideali}</div>
-                    <div className="titolo">ideali</div>
-                  </div>
-                  <div className="border">
-                    <div>{currentPG?.legami}</div>
-                    <div className="titolo">legami</div>
-                  </div>
-                  <div className="border">
-                    <div>{currentPG?.difetti}</div>
-                    <div className="titolo">difetti</div>
-                  </div>
+                  {viewerTS && (
+                    <div className="viewer">
+                      <TiriSalvezza
+                        mod={modFor}
+                        pg={currentPG}
+                        stat={`forza`}
+                      />
+                      <TiriSalvezza
+                        mod={modDes}
+                        pg={currentPG}
+                        stat={`Destrezza`}
+                      />
+                      <TiriSalvezza
+                        mod={modCos}
+                        pg={currentPG}
+                        stat={`Costituzione`}
+                      />
+                      <TiriSalvezza
+                        mod={modInt}
+                        pg={currentPG}
+                        stat={`Intelligenza`}
+                      />
+                      <TiriSalvezza
+                        mod={modSag}
+                        pg={currentPG}
+                        stat={`Saggezza`}
+                      />
+                      <TiriSalvezza
+                        mod={modCar}
+                        pg={currentPG}
+                        stat={`Carisma`}
+                      />
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            {/*privilegi e tratti*/}
-            <div className="border conteinerComp">
-              <div className="titolo border" onClick={changeViewPET}>
-                <p className="titoloIcona">
-                  <img src={medals} alt="Privilegi e tratti" />
-                  <span>Privilegi e tratti</span>
-                </p>
+                {/*abilità*/}
+                <div className="border listAB">
+                  <div className="titolo border">
+                    <p className="titoloIcona">
+                      <img src={tools} alt="Abilità" />
+                      <span onClick={changeViewAB}>Abilità</span>
+                      <img
+                        src={pencil}
+                        alt="cambio classe armatura"
+                        onClick={handleShowModalAbilita}
+                      />
+                    </p>
+                  </div>
+                  {viewerAB && (
+                    <div className="viewer">
+                      <Abilità
+                        mod={modDes}
+                        pg={currentPG}
+                        abilità={`Acrobazia`}
+                        stat={`des`}
+                      />
+                      <Abilità
+                        mod={modSag}
+                        pg={currentPG}
+                        abilità={`Addestrare animali`}
+                        stat={`sag`}
+                      />
+                      <Abilità
+                        mod={modInt}
+                        pg={currentPG}
+                        abilità={`Arcano`}
+                        stat={`int`}
+                      />
+                      <Abilità
+                        mod={modFor}
+                        pg={currentPG}
+                        abilità={`Atletica`}
+                        stat={`for`}
+                      />
+                      <Abilità
+                        mod={modDes}
+                        pg={currentPG}
+                        abilità={`Furtività`}
+                        stat={`des`}
+                      />
+                      <Abilità
+                        mod={modInt}
+                        pg={currentPG}
+                        abilità={`Indagare`}
+                        stat={`int`}
+                      />
+                      <Abilità
+                        mod={modCar}
+                        pg={currentPG}
+                        abilità={`Inganno`}
+                        stat={`car`}
+                      />
+                      <Abilità
+                        mod={modCar}
+                        pg={currentPG}
+                        abilità={`Intimidire`}
+                        stat={`car`}
+                      />
+                      <Abilità
+                        mod={modCar}
+                        pg={currentPG}
+                        abilità={`Intrattenere`}
+                        stat={`car`}
+                      />
+                      <Abilità
+                        mod={modSag}
+                        pg={currentPG}
+                        abilità={`Intuizione`}
+                        stat={`sag`}
+                      />
+                      <Abilità
+                        mod={modSag}
+                        pg={currentPG}
+                        abilità={`Medicina`}
+                        stat={`sag`}
+                      />
+                      <Abilità
+                        mod={modInt}
+                        pg={currentPG}
+                        abilità={`Natura`}
+                        stat={`int`}
+                      />
+                      <Abilità
+                        mod={modSag}
+                        pg={currentPG}
+                        abilità={`Percezione`}
+                        stat={`sag`}
+                      />
+                      <Abilità
+                        mod={modCar}
+                        pg={currentPG}
+                        abilità={`Persuasione`}
+                        stat={`car`}
+                      />
+                      <Abilità
+                        mod={modDes}
+                        pg={currentPG}
+                        abilità={`Rapidità di mano`}
+                        stat={`des`}
+                      />
+                      <Abilità
+                        mod={modInt}
+                        pg={currentPG}
+                        abilità={`Religione`}
+                        stat={`int`}
+                      />
+                      <Abilità
+                        mod={modSag}
+                        pg={currentPG}
+                        abilità={`Sopravvivenza`}
+                        stat={`sag`}
+                      />
+                      <Abilità
+                        mod={modInt}
+                        pg={currentPG}
+                        abilità={`Storia`}
+                        stat={`int`}
+                      />
+                    </div>
+                  )}
+                </div>
+                {/*percezione passiva*/}
+                <div className="BComp border">
+                  <span>Percezione passiva</span>
+                  <span>{percezionePassiva}</span>
+                </div>
               </div>
-              <ul>
-                {viewerPET && (
+              {/*linguaggi*/}
+              <div className="border containerlinguaggi">
+                <div className="titolo border" onClick={changeViewLingue}>
+                  <p className="titoloIcona">
+                    <img src={lips} alt="Linguaggi conosciuti" />
+                    <span onClick={changeViewLingue}>Linguaggi conosciuti</span>
+                    <img
+                      src={pencil}
+                      alt="cambio classe armatura"
+                      onClick={handleShowModalLinguaggi}
+                    />
+                  </p>
+                </div>
+                <ul>
+                  {viewerLingue && (
+                    <div className="viewer">
+                      {currentPG?.linguaggi?.map((linguaggio, index) => (
+                        <li key={index}>{linguaggio.lingua}</li>
+                      ))}
+                    </div>
+                  )}
+                </ul>
+              </div>
+              {/*competenze*/}
+              <div className="border conteinerComp">
+                <div className="titolo border">
+                  <p className="titoloIcona">
+                    <img src={idea} alt="Competenze" />
+                    <span onClick={changeViewComp}>Competenze</span>
+                    <img
+                      src={pencil}
+                      alt="cambio classe armatura"
+                      onClick={handleShowModalCompetenze}
+                    />
+                  </p>
+                </div>
+                <ul>
+                  {viewerComp && (
+                    <div className="viewer">
+                      {currentPG?.competenze?.map((comp, index) => (
+                        <li key={index}>{comp.nome}</li>
+                      ))}
+                    </div>
+                  )}
+                </ul>
+              </div>
+            </Col>
+            <Col lg={4} className="colonna">
+              {/*armatura, iniziativa, velocità, pf, dado vita*/}
+              <div className="containerData border">
+                <div className="border">
+                  <div className="border titolo">
+                    <p className="titoloIcona">
+                      <img src={shield} alt="Classe armatura" />
+                      <span onClick={changeViewArmor}>
+                        Classe armatura: {CA}
+                      </span>
+                      <img
+                        src={pencil}
+                        alt="cambio classe armatura"
+                        onClick={handleShowModalArmor}
+                      />
+                    </p>
+                  </div>
+                  {viewerArmor && (
+                    <div className="viewer">
+                      {currentPG?.armatura && (
+                        <Armour armour={currentPG?.armatura} />
+                      )}
+                      {currentPG?.scudo && <Armour armour={currentPG?.scudo} />}
+                    </div>
+                  )}
+                </div>
+                <div className="border">
+                  iniziativa: {currentPG?.iniziativa}
+                </div>
+                <div className="border">velocità: {currentPG?.velocita}</div>
+                <div className="border">
+                  <div className="border titolo">
+                    <p className="titoloIcona">
+                      <img src={heart} alt="cuore" />
+                      <span onClick={changeViewVita}>Vita</span>
+                      <img
+                        src={pencil}
+                        alt="modifica la tua vita"
+                        onClick={handleShowModalVita}
+                      />
+                    </p>
+                  </div>
+                  {viewerVita && (
+                    <div className="viewer">
+                      <div>PF massimi: {currentPG?.pf_max}</div>
+                      <div>PF attuali: {currentPG?.pf}</div>
+                      <div>PF temporanei: {currentPG?.pf_temporanei}</div>
+                    </div>
+                  )}
+                </div>
+                <div className="border">
+                  dado vita: {currentPG?.dado_vita?.dado}
+                </div>
+              </div>
+              {/*armi*/}
+              <div className="containerArmor border">
+                <div className="border titolo" onClick={changeViewArmi}>
+                  <p className="titoloIcona">
+                    <img src={swords} alt="Armi" />
+                    <span>Armi</span>
+                  </p>
+                </div>
+                {viewerArmi && (
                   <div className="viewer">
-                    {currentPG?.privilegi?.map((privilegio, index) => (
-                      <li key={index}>
-                        {" "}
-                        <Privilegio index={index} privilegio={privilegio} />
-                      </li>
+                    {currentPG?.armi?.map((arma, index) => (
+                      <div className="border">
+                        <Armi
+                          key={index}
+                          arma={arma}
+                          modFor={modFor}
+                          modDes={modDes}
+                          BComp={currentPG?.bonusCompetenza}
+                        />
+                      </div>
                     ))}
                   </div>
                 )}
-              </ul>
+              </div>
+              {/*equipaggiamento, ricchezza*/}
+              <div className="containerQuip border">
+                <div className="border titolo" onClick={changeViewEquip}>
+                  <p className="titoloIcona">
+                    <img src={bag} alt="Equipaggiamento" />
+                    <span>Equipaggiamento</span>
+                  </p>
+                </div>
+                {viewerEquip && (
+                  <div className="viewer">
+                    {currentPG?.equipaggiamentoBase?.map(
+                      (equipaggiamento, index) => (
+                        <div className="border">
+                          <Equipaggiamento
+                            key={index}
+                            equip={equipaggiamento}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
+                <div className="border titolo">
+                  <p className="titoloIcona">
+                    <img src={money} alt="Ricchezza" />
+                    <span onClick={changeViewGold}>Ricchezza</span>
+                    <img
+                      src={pencil}
+                      alt="cambio classe armatura"
+                      onClick={handleShowModalMonete}
+                    />
+                  </p>
+                </div>
+                {viewerGold && (
+                  <div className="viewer">
+                    <div>MR: {currentPG?.monete_rame}</div>
+                    <div>MA: {currentPG?.monete_argento}</div>
+                    <div>MO: {currentPG?.monete_oro}</div>
+                    <div>MP: {currentPG?.monete_platino}</div>
+                  </div>
+                )}
+              </div>
+            </Col>
+            <Col lg={4} className="colonna">
+              {/*note del personaggio*/}
+              <div className="containerNote border">
+                <div className="border titolo">
+                  <p className="titoloIcona">
+                    <img src={pen} alt="Note del personaggio" />
+                    <span onClick={changeViewNOTE}>Note del personaggio</span>
+                    <img
+                      src={pencil}
+                      alt="cambio classe armatura"
+                      onClick={handleShowModalNote}
+                    />
+                  </p>
+                </div>
+                {viewerNOTE && (
+                  <div className="viewer">
+                    <div className="border">
+                      <div className="testo">{currentPG?.background}</div>
+                      <div className="titolo">background</div>
+                    </div>
+                    <div className="border">
+                      <div className="testo">
+                        {currentPG?.tratti_caratteriali}
+                      </div>
+                      <div className="titolo">tratti caratteriali</div>
+                    </div>
+
+                    <div className="border">
+                      <div className="testo">{currentPG?.ideali}</div>
+                      <div className="titolo">ideali</div>
+                    </div>
+                    <div className="border">
+                      <div className="testo">{currentPG?.legami}</div>
+                      <div className="titolo">legami</div>
+                    </div>
+                    <div className="border">
+                      <div className="testo">{currentPG?.difetti}</div>
+                      <div className="titolo">difetti</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {/*privilegi e tratti*/}
+              <div className="border conteinerComp">
+                <div className="titolo border" onClick={changeViewPET}>
+                  <p className="titoloIcona">
+                    <img src={medals} alt="Privilegi e tratti" />
+                    <span>Privilegi e tratti</span>
+                  </p>
+                </div>
+                <ul>
+                  {viewerPET && (
+                    <div className="viewer">
+                      {currentPG?.privilegi?.map((privilegio, index) => (
+                        <li key={index}>
+                          {" "}
+                          <Privilegio index={index} privilegio={privilegio} />
+                        </li>
+                      ))}
+                    </div>
+                  )}
+                </ul>
+              </div>
+            </Col>
+          </Row>
+
+          {siInsantesimi && (
+            <div>
+              <PaginaIncantesimi currentPG={currentPG} />
             </div>
-          </Col>
-        </Row>
-        <Row>
-          <Button
-            variant="danger"
-            onClick={() => handleClickDelete(currentPG?.id)}
-          >
-            elimina pg
-          </Button>{" "}
-        </Row>
-      </div>
+          )}
+
+          <Row className="options">
+            <Col lg={4}>
+              <Button
+                variant="danger"
+                onClick={() => handleClickDelete(currentPG?.id)}
+              >
+                elimina pg
+              </Button>
+            </Col>
+          </Row>
+        </div>
+      )}
 
       {/* modale modifica armatura e scudi */}
       <Modal show={showModalArmor} onHide={handleCloseModalArmor}>
@@ -1345,6 +1512,50 @@ const Homepage = () => {
         </Modal.Footer>
       </Modal>
 
+      {/* modale modifica vita */}
+      <Modal show={showModalVita} onHide={handleCloseModalVita}>
+        <Modal.Header closeButton>
+          <Modal.Title>inserisci i danni o usa le pozioni</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group className="mb-3" controlId="pfMassimi">
+            <Form.Label>pf massimi</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Inserisci le monete di rame"
+              value={newPfMassimi}
+              onChange={(e) => setNewPfMassimi(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="pfAttuali">
+            <Form.Label>pf attuali</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Inserisci le monete di rame"
+              value={newPfAttuali}
+              onChange={(e) => setNewPfAttuali(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="pfTemporanei">
+            <Form.Label>pf temporanei</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Inserisci le monete d'argento"
+              value={newPfTemporanei}
+              onChange={(e) => setNewPfTemporanei(e.target.value)}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModalVita}>
+            Chiudi
+          </Button>
+          <Button variant="primary" onClick={() => clickModVita()}>
+            conferma
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* modale modifica monete */}
       <Modal show={showModalMonete} onHide={handleCloseModalMonete}>
         <Modal.Header closeButton>
@@ -1398,7 +1609,7 @@ const Homepage = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* modale modifica node del pg */}
+      {/* modale modifica note del pg */}
       <Modal show={showModalNote} onHide={handleCloseModalNote}>
         <Modal.Header closeButton>
           <Modal.Title>Modifica note del personaggio</Modal.Title>

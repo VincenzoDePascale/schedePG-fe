@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRef } from "react";
 import "./Menu.scss";
 //import Modal_newPg from "./Modal_newPg";
 
@@ -95,23 +96,27 @@ const Menu = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [nomeNewPg, setNomeNewPg] = useState();
-  const [newAllineamento, setNewAllineamento] = useState();
-  const [newForza, setNewForza] = useState();
-  const [newDestrezza, setNewDestrezza] = useState();
-  const [newCostituzione, setNewCostituzione] = useState();
-  const [newIntelligenza, setNewIntelligenza] = useState();
-  const [newSaggezza, setNewSaggezza] = useState();
-  const [newCarisma, setNewCarisma] = useState();
-  const [newRazza, setNewRazza] = useState();
-  const [newClasse, setNewClasse] = useState();
+  const [NewnomePg, setNewNomePg] = useState("nuovo personaggio");
+  const [newAllineamento, setNewAllineamento] = useState("neutrale");
+  const [newForza, setNewForza] = useState(10);
+  const [newDestrezza, setNewDestrezza] = useState(10);
+  const [newCostituzione, setNewCostituzione] = useState(10);
+  const [newIntelligenza, setNewIntelligenza] = useState(10);
+  const [newSaggezza, setNewSaggezza] = useState(10);
+  const [newCarisma, setNewCarisma] = useState(10);
+  const [newRazza, setNewRazza] = useState("umano");
+  const [newClasse, setNewClasse] = useState("barbaro");
   const [newAbilita, setNewAbilita] = useState([]);
-  const [newLivello, setNewLivello] = useState();
-  const [newBackground, setNewBackground] = useState();
-  const [newTrattiCaratteriali, setNewTrattiCaratteriali] = useState();
-  const [newIdeali, setNewIdeali] = useState();
-  const [newLegami, setNewLegami] = useState();
-  const [newDifetti, setNewDifetti] = useState();
+  const [newLivello, setNewLivello] = useState(1);
+  const [newBackground, setNewBackground] = useState(
+    "inserisci la storia del tuo personaggio"
+  );
+  const [newTrattiCaratteriali, setNewTrattiCaratteriali] = useState(
+    "i tratti caratteriali del tuo personaggio"
+  );
+  const [newIdeali, setNewIdeali] = useState("gli ideali del tuo personaggio");
+  const [newLegami, setNewLegami] = useState("i legami del tuo personaggio");
+  const [newDifetti, setNewDifetti] = useState("i difetti del tuo personaggio");
 
   const [aggiorna, setAggiorna] = useState(false);
   const [createPG, setCreatePG] = useState(false);
@@ -157,7 +162,7 @@ const Menu = () => {
         },
         body: JSON.stringify({
           nomeUtente: myProfile.username,
-          nomePersonaggio: nomeNewPg,
+          nomePersonaggio: NewnomePg,
           allineamento: newAllineamento,
           forza: newForza,
           destrezza: newDestrezza,
@@ -192,6 +197,9 @@ const Menu = () => {
       // gestione dell'errore
     }
   };
+
+  // const menu = useRef();
+  // useRef((menu.current = addNewPg));
 
   useEffect(() => {
     if (createPG === true) {
@@ -265,8 +273,8 @@ const Menu = () => {
               <Form.Control
                 type="text"
                 placeholder="Inserisci il nome del personaggio"
-                value={nomeNewPg}
-                onChange={(e) => setNomeNewPg(e.target.value)}
+                value={NewnomePg}
+                onChange={(e) => setNewNomePg(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="allinemaneto">
@@ -275,7 +283,6 @@ const Menu = () => {
                 value={newAllineamento}
                 onChange={(e) => setNewAllineamento(e.target.value)}
               >
-                <option value="">Seleziona un allineamento</option>
                 <option value="legale buono">Legale buono</option>
                 <option value="legale neutrale">Legale neutrale</option>
                 <option value="legale malvagio">Legale malvagio</option>
@@ -383,7 +390,6 @@ const Menu = () => {
                 value={newClasse}
                 onChange={(e) => setNewClasse(e.target.value)}
               >
-                <option value="">Seleziona una classe</option>
                 <option value="barbaro">Barbaro</option>
                 <option value="bardo">Bardo</option>
                 <option value="chierico">Chierico</option>

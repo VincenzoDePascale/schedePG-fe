@@ -16,23 +16,23 @@ const Equipaggiamento = ({ index, equip }) => {
     <>
       <div className="formaEquip">
         <div className="linea" onClick={handleClick}>
-          <span className="nome">{equip.nome}</span>
-          <span className="peso">{equip.peso}</span>
+          <span className="nome">{equip?.nome}</span>
+          <span className="peso">{equip?.peso}</span>
         </div>
       </div>
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>{equip.nome}</Modal.Title>
+          <Modal.Title>{equip?.nome}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>descrizione:</div>
-          <div> {equip.descrizione}</div>
+          <div> {equip?.descrizione}</div>
         </Modal.Body>
         <Modal.Body>
-          valore: {equip.costo} {equip.moneta}
+          valore: {equip?.costo} {equip.moneta}
         </Modal.Body>
         <Modal.Body>
-          <div>peso: {equip.peso}</div>
+          <div>peso: {equip?.peso}</div>
         </Modal.Body>
       </Modal>
     </>
