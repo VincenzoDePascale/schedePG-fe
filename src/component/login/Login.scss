@@ -1,0 +1,37 @@
+.containerAll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .title {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    p {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+    img {
+      margin-left: 15px;
+      width: 50px;
+    }
+  }
+  .form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .containerForm {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      min-width: 300px;
+      max-width: 500px;
+    }
+  }
+}

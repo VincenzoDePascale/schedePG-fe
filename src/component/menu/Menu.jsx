@@ -9,16 +9,23 @@ import {
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRef } from "react";
 import "./Menu.scss";
-//import Modal_newPg from "./Modal_newPg";
 
 const Menu = () => {
   const dispatch = useDispatch();
   const myProfile = useSelector((state) => state.main.myProfile);
   const token = useSelector((state) => state.main.myProfile.accessToken);
+  const currentPG = useSelector((state) => state.main.PersonaggioCorrente);
   const pgInState = useSelector((state) => state.main.listPG);
   const aggiornamento = useSelector((state) => state.main.aggiornamento);
+
+  // logica prima attivazone
+
+  useEffect(() => {
+    if (currentPG == null) {
+      handleShow();
+    }
+  }, [currentPG, myProfile]);
 
   const searchAllPG = async () => {
     try {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import "./Homepage.scss";
+import Menu from "../menu/Menu";
 import Statistica from "./Statistica";
 import TiriSalvezza from "./TiriSalvezza";
 import Abilità from "./Abilità";
@@ -10,7 +11,6 @@ import Equipaggiamento from "./Equipaggiamento";
 import Armour from "./Armour";
 import Armi from "./Armi";
 import Privilegio from "./Privilegio";
-
 import PaginaIncantesimi from "./PaginaIncantesimi";
 
 import shield from "../../Assets/img/shield.png";
@@ -735,7 +735,7 @@ const Homepage = () => {
 
   return (
     <>
-      {/* <Menu /> */}
+      <Menu />
       {currentPG && (
         <div className="contAll">
           {/* intestazione */}

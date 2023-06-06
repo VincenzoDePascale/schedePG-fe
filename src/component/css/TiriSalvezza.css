@@ -1,0 +1,28 @@
+.formaTS {
+  width: 90%;
+  margin: 0;
+}
+
+.lineaTS {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.lineaTS .clickTS {
+  display: flex;
+  justify-content: center;
+  width: 10%;
+}
+.lineaTS .ptTS {
+  display: flex;
+  justify-content: center;
+  width: 30%;
+}
+.lineaTS .statTS {
+  display: flex;
+  justify-content: start;
+  width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}/*# sourceMappingURL=TiriSalvezza.css.map */

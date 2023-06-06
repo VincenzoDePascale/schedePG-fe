@@ -1,0 +1,35 @@
+@charset "UTF-8";
+.formaAB {
+  width: 90%;
+  margin: 0;
+}
+
+.lineaAB {
+  display: flex;
+  white-space: nowrap;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.lineaAB .clickAB {
+  display: flex;
+  justify-content: center;
+  width: 10%;
+}
+.lineaAB .ptAB {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+}
+.lineaAB .abilitàAB {
+  display: flex;
+  justify-content: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 50%;
+}
+.lineaAB .statAB {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+}/*# sourceMappingURL=Abilità.css.map */

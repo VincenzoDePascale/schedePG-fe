@@ -1,10 +1,12 @@
 import { Button, Container, Form, Row, InputGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import "./Login.scss";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
+import "./Login.scss";
+
+import dice from "../../Assets/img/d20.png";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -83,6 +85,7 @@ const Login = () => {
       if (response.ok) {
         const data = await response.text();
         console.log("questo è data della fetch REGISTER", data);
+        postLogin();
         return redirect("/homepage");
       } else {
         // gestione dell'errore
@@ -93,111 +96,113 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="w-50">
-        <Container>
-          <Row>
-            {viewer && <h5 className="text-center">Accedi alla tua partita</h5>}
-            {!viewer && (
-              <h5 className="text-center">Registrati e gioca con noi</h5>
-            )}
-          </Row>
-          <Row className="justify-content-center align-items-center">
-            <div
-              className="border rounded p-4 text-center d-flex flex-column"
-              style={{ minWidth: "300px", maxWidth: "500px" }}
-            >
-              {viewer && (
-                <div className="mb-3">
-                  <Form.Label className="d-block">Username</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Inserisci username"
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-              )}
-
-              {!viewer && (
-                <div className="mb-3">
-                  <Form.Label className="d-block">Username</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Inserisci username"
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                  <Form.Label className="d-block">Email</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Inserisci email"
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-              )}
-
-              <div className="mb-3">
-                <Form.Label className="d-block">Password</Form.Label>
-                <InputGroup>
-                  <Form.Control
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Inserisci password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <InputGroup.Text onClick={toggleShowPassword}>
-                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                  </InputGroup.Text>
-                </InputGroup>
-              </div>
-              {viewer && (
-                <Button
-                  variant="light"
-                  type="submit"
-                  onClick={postLogin}
-                  className="rounded-pill px-4 mt-3"
-                >
-                  Accedi
-                </Button>
-              )}
-              {!viewer && (
-                <Button
-                  variant="light"
-                  type="submit"
-                  onClick={postRegister}
-                  className="rounded-pill px-4 mt-3"
-                >
-                  Registrati
-                </Button>
-              )}
-              <Form.Group className="mt-3">
-                {viewer && (
-                  <p>
-                    Se non hai un account{" "}
-                    <span
-                      style={{ color: "grey", cursor: "pointer" }}
-                      onClick={changeView}
-                    >
-                      registrati
-                    </span>
-                  </p>
-                )}
-                {!viewer && (
-                  <p>
-                    Se hai già account{" "}
-                    <span
-                      style={{ color: "grey", cursor: "pointer" }}
-                      onClick={changeView}
-                    >
-                      accedi
-                    </span>
-                  </p>
-                )}
-              </Form.Group>
+    <>
+      <Container fluid className="containerAll">
+        <Row>
+          {viewer && (
+            <div className="title">
+              <p>Accedi alla tua partita</p>
+              <img src={dice} alt="d20" />
             </div>
-          </Row>
-        </Container>
-      </div>
-    </div>
+          )}
+          {!viewer && (
+            <div className="title">
+              <p>Registrati e gioca con noi</p>
+            </div>
+          )}
+        </Row>
+        <Row className="form">
+          <div className="containerForm border rounded p-4">
+            {viewer && (
+              <div className="mb-3">
+                <Form.Label className="d-block">Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Inserisci username"
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+            )}
+
+            {!viewer && (
+              <div className="mb-3">
+                <Form.Label className="d-block">Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Inserisci username"
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <Form.Label className="d-block">Email</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Inserisci email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            )}
+
+            <div className="mb-3">
+              <Form.Label className="d-block">Password</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Inserisci password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputGroup.Text onClick={toggleShowPassword}>
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </InputGroup.Text>
+              </InputGroup>
+            </div>
+            {viewer && (
+              <Button
+                variant="light"
+                type="submit"
+                onClick={postLogin}
+                className="rounded-pill px-4 mt-3"
+              >
+                Accedi
+              </Button>
+            )}
+            {!viewer && (
+              <Button
+                variant="light"
+                type="submit"
+                onClick={postRegister}
+                className="rounded-pill px-4 mt-3"
+              >
+                Registrati
+              </Button>
+            )}
+            <Form.Group className="mt-3">
+              {viewer && (
+                <p>
+                  Se non hai un account{" "}
+                  <span
+                    style={{ color: "grey", cursor: "pointer" }}
+                    onClick={changeView}
+                  >
+                    registrati
+                  </span>
+                </p>
+              )}
+              {!viewer && (
+                <p>
+                  Se hai già account{" "}
+                  <span
+                    style={{ color: "grey", cursor: "pointer" }}
+                    onClick={changeView}
+                  >
+                    accedi
+                  </span>
+                </p>
+              )}
+            </Form.Group>
+          </div>
+        </Row>
+      </Container>
+    </>
   );
 };
 

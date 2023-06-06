@@ -1,1 +1,245 @@
-/*# sourceMappingURL=Homepage.css.map */
+.contAll {
+  padding: 20px;
+}
+
+.bTop {
+  border-top: 2px solid black;
+}
+
+.intestazione {
+  align-items: center;
+}
+.intestazione p {
+  width: 100%;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+.intestazione p span {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.intestazione p .valore {
+  font-weight: bold;
+  align-self: end;
+}
+
+.nomeDelPersonaggio {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
+.nomeDelPersonaggio .nomePG {
+  justify-content: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.8em;
+}
+
+.titolo {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.border {
+  border: 2px solid black;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  margin: 10px 0;
+}
+
+.titoloIcona {
+  width: 100%;
+  font-size: 1.2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+.titoloIcona img {
+  padding: 0 5px 0 5px;
+  height: 20px;
+  margin: 0;
+}
+.titoloIcona span {
+  white-space: nowrap;
+  margin: 0;
+}
+
+.statistiche {
+  margin: 0;
+  padding: 5px 0;
+}
+
+.page {
+  margin: 0;
+  padding: 5px 0;
+  align-items: start;
+}
+.page .colonna {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.options {
+  border-top: 2px solid black;
+  padding: 10px 0;
+}
+.containerTS {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.containerTS .isp {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.containerTS .isp img {
+  height: 30px;
+  margin: 0;
+}
+.containerTS .BComp {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.containerTS .listTS {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.containerTS .listTS .viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.containerTS .listAB {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.containerTS .listAB .viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.containerTS .listAB .viewer .linea {
+  display: flex;
+  width: 95%;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.containerTS .listAB .viewer .linea .icon {
+  display: flex;
+  justify-content: center;
+  width: 10%;
+}
+.containerTS .listAB .viewer .linea .pt {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+}
+.containerTS .listAB .viewer .linea .stat {
+  display: flex;
+  justify-content: center;
+  width: 45%;
+}
+.containerTS .listAB .viewer .linea .mod {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+}
+
+.containerlinguaggi,
+.conteinerComp {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.containerlinguaggi ul,
+.conteinerComp ul {
+  list-style: none;
+  padding: 0;
+}
+
+.containerData {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0px;
+}
+.containerData .border {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 90%;
+  margin: 10px 0;
+}
+
+.containerArmor {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.containerArmor .viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.containerQuip {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.containerQuip .viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.containerNote {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0px;
+}
+.containerNote .border {
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  margin: 10px 0;
+}
+.containerNote .titolo {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.containerNote .viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.containerNote .viewer .border {
+  flex-direction: column;
+  align-items: center;
+}
+.containerNote .viewer .border .testo {
+  text-align: center;
+  padding: 5px;
+}
+.containerNote .viewer .border .titolo {
+  padding: 5px;
+  margin: 0px;
+}/*# sourceMappingURL=Homepage.css.map */

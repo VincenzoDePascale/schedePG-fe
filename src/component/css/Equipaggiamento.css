@@ -1,0 +1,18 @@
+.formaEquip {
+  width: 90%;
+  margin: 0;
+}
+.formaEquip .linea {
+  display: flex;
+  white-space: nowrap;
+  width: 100%;
+}
+.formaEquip .nome {
+  width: 90%;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.formaEquip .peso {
+  width: 10%;
+}/*# sourceMappingURL=Equipaggiamento.css.map */

@@ -1,1 +1,36 @@
-/*# sourceMappingURL=Login.css.map */
+.containerAll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.containerAll .title {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+.containerAll .title p {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+.containerAll .title img {
+  margin-left: 15px;
+  width: 50px;
+}
+.containerAll .form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.containerAll .form .containerForm {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  min-width: 300px;
+  max-width: 500px;
+}/*# sourceMappingURL=Login.css.map */

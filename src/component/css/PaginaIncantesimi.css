@@ -1,0 +1,18 @@
+.intestazione {
+  align-items: center;
+}
+.intestazione p {
+  width: 100%;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+.intestazione p span {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.intestazione p .valore {
+  font-weight: bold;
+  align-self: end;
+}/*# sourceMappingURL=PaginaIncantesimi.css.map */

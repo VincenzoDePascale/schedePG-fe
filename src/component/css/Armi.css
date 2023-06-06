@@ -1,0 +1,31 @@
+.formaArmi {
+  width: 90%;
+  margin: 0;
+}
+.formaArmi .lineaArma {
+  display: flex;
+  white-space: nowrap;
+  width: 100%;
+}
+.formaArmi .lineaArma .clickArma {
+  display: flex;
+  justify-content: center;
+  width: 10%;
+}
+.formaArmi .lineaArma .ptArma {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+}
+.formaArmi .lineaArma .nome {
+  display: flex;
+  justify-content: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 50%;
+}
+.formaArmi .lineaArma .danno {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+}/*# sourceMappingURL=Armi.css.map */
