@@ -106,6 +106,7 @@ const Login = () => {
           )}
           {!viewer && (
             <div className="title">
+              <img src={dice} alt="d20" />
               <p>Registrati e gioca con noi</p>
             </div>
           )}

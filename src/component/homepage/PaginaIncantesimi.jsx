@@ -1,4 +1,4 @@
-import { Row, Col, Button, Modal, Form } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 import "./PaginaIncantesimi.scss";

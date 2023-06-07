@@ -407,7 +407,7 @@ const Menu = () => {
                 <option value="monaco">Monaco</option>
                 <option value="paladino">Paladino</option>
                 <option value="ranger">Ranger</option>
-                <option value="stragone">Stregone</option>
+                <option value="stregone">Stregone</option>
                 <option value="warlock">Warlock</option>
               </Form.Select>
             </Form.Group>

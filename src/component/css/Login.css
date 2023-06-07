@@ -17,9 +17,10 @@
   margin: 0;
   display: flex;
   align-items: center;
+  margin: 0 5px;
 }
 .containerAll .title img {
-  margin-left: 15px;
+  margin: 0 5px;
   width: 50px;
 }
 .containerAll .form {
