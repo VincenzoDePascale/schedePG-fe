@@ -113,6 +113,9 @@ const Menu = () => {
   const [newCarisma, setNewCarisma] = useState(10);
   const [newRazza, setNewRazza] = useState("umano");
   const [newClasse, setNewClasse] = useState("barbaro");
+  const [newSpecializzazione, setNewSpecializzazione] = useState(
+    "cammino del berserker"
+  );
   const [newAbilita, setNewAbilita] = useState([]);
   const [newLivello, setNewLivello] = useState(1);
   const [newBackground, setNewBackground] = useState(
@@ -179,6 +182,7 @@ const Menu = () => {
           carisma: newCarisma,
           razza: newRazza,
           classe: newClasse,
+          specializzazione: newSpecializzazione,
           abilitaAttive: newAbilita,
           livello: newLivello,
           background: newBackground,
@@ -409,6 +413,125 @@ const Menu = () => {
                 <option value="ranger">Ranger</option>
                 <option value="stregone">Stregone</option>
                 <option value="warlock">Warlock</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="specializzazione">
+              <Form.Label>Classe</Form.Label>
+              <Form.Select
+                value={newSpecializzazione}
+                onChange={(e) => setNewSpecializzazione(e.target.value)}
+              >
+                <option value="cammino del berserker">
+                  cammino del berserker
+                </option>
+                <option value="cammino del combattente totemico">
+                  cammino del combattente totemico
+                </option>
+                <option value="collegio della sapienza">
+                  collegio della sapienza
+                </option>
+                <option value="collagio del valore">collagio del valore</option>
+                <option value="dominio della conoscenza">
+                  dominio della conoscenza
+                </option>
+                <option value="dominio della guerra">
+                  dominio della guerra
+                </option>
+                <option value="dominio dell'inganno">
+                  dominio dell'inganno
+                </option>
+                <option value="dominio della luce">dominio della luce</option>
+                <option value="dominio della natura">
+                  dominio della natura
+                </option>
+                <option value="dominio della tempesta">
+                  dominio della tempesta
+                </option>
+                <option value="dominio della vita">dominio della vita</option>
+                <option value="circolo della terra (artico)">
+                  circolo della terra (artico)
+                </option>
+                <option value="circolo della terra (costa)">
+                  circolo della terra (costa)
+                </option>
+                <option value="circolo della terra (deserto)">
+                  circolo della terra (deserto)
+                </option>
+                <option value="circolo della terra (foresta)">
+                  circolo della terra (foresta)
+                </option>
+                <option value="circolo della terra (montagna)">
+                  circolo della terra (montagna)
+                </option>
+                <option value="circolo della terra (palude)">
+                  circolo della terra (palude)
+                </option>
+                <option value="circolo della terra (prateria)">
+                  circolo della terra (prateria)
+                </option>
+                <option value="circolo della terra (underdark)">
+                  circolo della terra (underdark)
+                </option>
+                <option value="circolo della luce">circolo della luce</option>
+                <option value="campione">campione</option>
+                <option value="maestro di battaglia">
+                  maestro di battaglia
+                </option>
+                <option value="cavaliere mistico">cavaliere mistico</option>
+                <option value="furfante">furfante</option>
+                <option value="assassino">assassino</option>
+                <option value="mistificatore arcano">
+                  mistificatore arcano
+                </option>
+                <option value="scuola di abiurazione">
+                  scuola di abiurazione
+                </option>
+                <option value="scuola di ammaliamento">
+                  scuola di ammaliamento
+                </option>
+                <option value="scuola di divinazione">
+                  scuola di divinazione
+                </option>
+                <option value="scuola di ecovazione">
+                  scuola di ecovazione
+                </option>
+                <option value="scuola di illusione">scuola di illusione</option>
+                <option value="scuola di invocazione">
+                  scuola di invocazione
+                </option>
+                <option value="scuola di necromanzia">
+                  scuola di necromanzia
+                </option>
+                <option value="scuola di trasmutazione">
+                  scuola di trasmutazione
+                </option>
+                <option value="via della mano aperta">
+                  via della mano aperta
+                </option>
+                <option value="via dell'ombra">via dell'ombra</option>
+                <option value="via dei quattro elementi">
+                  via dei quattro elementi
+                </option>
+                <option value="giuramento di devozione">
+                  giuramento di devozione
+                </option>
+                <option value="giuramento degli antichi">
+                  giuramento degli antichi
+                </option>
+                <option value="giuramento di vendetta">
+                  giuramento di vendetta
+                </option>
+                <option value="cacciatore">cacciatore</option>
+                <option value="signore delle bestie">
+                  signore delle bestie
+                </option>
+                <option value="discendenza draconica">
+                  discendenza draconica
+                </option>
+                <option value="magia selvaggia">magia selvaggia</option>
+                <option value="il signore fatato">il signore fatato</option>
+                <option value="l'immondo">l'immondo</option>
+                <option value="il grande antico">il grande antico</option>
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="abilita">

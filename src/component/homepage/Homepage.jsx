@@ -35,6 +35,7 @@ const Homepage = () => {
   const myProfile = useSelector((state) => state.main.myProfile);
   const token = useSelector((state) => state.main.myProfile.accessToken);
   const currentPG = useSelector((state) => state.main.PersonaggioCorrente);
+  console.log("currentPG", currentPG);
 
   const navigate = useNavigate();
 
@@ -93,6 +94,11 @@ const Homepage = () => {
   const [viewerPET, setViewerPET] = useState(true);
   const changeViewPET = () => {
     setViewerPET(!viewerPET);
+  };
+
+  const [viewerPES, setViewerPES] = useState(true);
+  const changeViewPES = () => {
+    setViewerPES(!viewerPES);
   };
 
   // calcolo modificatori
@@ -832,7 +838,9 @@ const Homepage = () => {
                 <p>
                   <span className="parametro">Classe e livello:</span>{" "}
                   <span className="valore">
-                    {currentPG?.classe?.classe}, {currentPG?.livello}
+                    {currentPG?.classe?.classe}{" "}
+                    {`(${currentPG?.specializzazione?.specializzazione})`},{" "}
+                    {currentPG?.livello}
                   </span>
                 </p>
 
@@ -882,6 +890,7 @@ const Homepage = () => {
             <img
               className="modifica"
               src={editing}
+              alt="modifica"
               onClick={handleShowModalStatistiche}
             />
           </Row>
@@ -1317,6 +1326,29 @@ const Homepage = () => {
                           <Privilegio index={index} privilegio={privilegio} />
                         </li>
                       ))}
+                    </div>
+                  )}
+                </ul>
+              </div>
+              {/*talenti di specializzazione*/}
+              <div className="border conteinerComp">
+                <div className="titolo border" onClick={changeViewPES}>
+                  <p className="titoloIcona">
+                    <img src={medals} alt="talenti di specializzazione" />
+                    <span>Talenti di specializzazione</span>
+                  </p>
+                </div>
+                <ul>
+                  {viewerPES && (
+                    <div className="viewer">
+                      {currentPG?.privilegiSpeciali?.map(
+                        (privilegio, index) => (
+                          <li key={index}>
+                            {" "}
+                            <Privilegio index={index} privilegio={privilegio} />
+                          </li>
+                        )
+                      )}
                     </div>
                   )}
                 </ul>

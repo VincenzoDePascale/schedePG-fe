@@ -111,13 +111,13 @@ const PaginaIncantesimi = ({ currentPG }) => {
 
       <Row className="page">
         <div className="text-center">qui ci saranno gli incantesimi</div>
-        {/* <Col lg={4} className="colonna">
+        {/* <Col xs={12} md={4} lg={3} className="colonna">
           colonna uno
         </Col>
-        <Col lg={4} className="colonna">
+        <Col xs={12} md={4} lg={3} className="colonna">
           colonna due
         </Col>
-        <Col lg={4} className="colonna">
+        <Col xs={12} md={4} lg={3} className="colonna">
           colonna tre
         </Col> */}
       </Row>
